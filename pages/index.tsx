@@ -2,11 +2,12 @@
 import { MessageSquare, Workflow, Brain, Zap, CheckCircle, Rocket, Users, Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers, Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle } from "lucide-react";
 
 export default function Home() {
-  const featureIcons = {
-    starter: <Sparkles className=\"h-5 w-5\" />,
-    growth: <Rocket className=\"h-5 w-5\" />,
-    enterprise: <ShieldCheck className=\"h-5 w-5\" />,
-  } as const;
+  const featureIcons: Record<"starter" | "growth" | "enterprise", JSX.Element> = {
+  starter: <Sparkles className="h-5 w-5" />,
+  growth: <Rocket className="h-5 w-5" />,
+  enterprise: <ShieldCheck className="h-5 w-5" />
+};
+
 
   return (
     <div className=\"min-h-screen relative text-slate-100 overflow-hidden\">
