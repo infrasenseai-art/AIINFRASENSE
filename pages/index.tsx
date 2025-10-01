@@ -11,7 +11,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <div className="relative h-9 w-9">
-            <Image src="/assets/logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
+            <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
           </div>
           <span className="font-semibold text-lg tracking-wide">Infrasenseai</span>
         </a>
