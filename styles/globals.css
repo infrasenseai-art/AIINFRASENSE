@@ -1,6 +1,14 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body, #__next { height: 100%; background: #0b0f19; }
+/* Animations */
+@keyframes blobA { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-20px) scale(1.06)} 66%{transform:translate(-20px,25px) scale(0.98)} 100%{transform:translate(0,0) scale(1)} }
+@keyframes blobB { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(-35px,15px) scale(1.04)} 66%{transform:translate(25px,-25px) scale(1.02)} 100%{transform:translate(0,0) scale(1)} }
+@keyframes blobC { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,30px) scale(1.05)} 66%{transform:translate(-30px,-15px) scale(0.97)} 100%{transform:translate(0,0) scale(1)} }
+
+.blobA { animation: blobA 26s ease-in-out infinite; }
+.blobB { animation: blobB 30s ease-in-out infinite; }
+.blobC { animation: blobC 34s ease-in-out infinite; }
+
+html, body { background:#0b0f19; }
