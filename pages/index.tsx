@@ -62,7 +62,7 @@ export default function Home() {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <div className="relative h-10 w-10 sm:h-12 sm:w-12">
-                <Image src="/assets/logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
+                <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
               </div>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight">Infrasenseai</h1>
             </div>
@@ -282,7 +282,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="relative h-8 w-8">
-              <Image src="/assets/logo.png" alt="Infrasenseai Logo" fill className="object-contain" />
+              <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" />
             </div>
             <span className="text-sm">© {new Date().getFullYear()} Infrasenseai – Alle Rechte vorbehalten.</span>
           </div>
