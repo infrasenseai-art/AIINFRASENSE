@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 {
   "name": "infrasenseai-full",
   "version": "1.0.0",
