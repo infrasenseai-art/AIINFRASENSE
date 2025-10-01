@@ -69,66 +69,48 @@ export default function Home() {
 
       <Header />
 
-      {/* Hero */}
-      <section className="relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-3">
-              <div className="relative h-12 w-12">
-                <Image
-                  src="/assets/Logo.png"
-                  alt="Infrasenseai Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight">
-                Infrasenseai
-              </h1>
-            </div>
-
-            <p className="mt-6 text-lg text-slate-300 max-w-3xl mx-auto">
-              Automatisierung &amp; Dialog für moderne Unternehmen. Wir kombinieren
-              intelligente Workflows und KI – für messbar schnellere, bessere
-              Kundenprozesse.
-            </p>
-
-            <div className="mt-8 flex items-center justify-center gap-3">
-              <a
-                href="#kontakt"
-                className="px-5 py-3 rounded-xl bg-white text-[#0b0f19] font-medium"
-              >
-                Kostenloses Gespräch
-              </a>
-              <a
-                href="#benefits"
-                className="px-5 py-3 rounded-xl border border-white/20 text-slate-200 hover:bg-white/5"
-              >
-                Mehr erfahren
-              </a>
-            </div>
-
-            {/* Hero-Infos */}
-            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { k: "Anwendungsfälle", v: "Service · Ops · Vertrieb", icon: <Layers className="h-4 w-4" /> },
-                { k: "Kickstart", v: "Go-Live in 2 Wochen", icon: <Rocket className="h-4 w-4" /> },
-                { k: "Kanäle", v: "WhatsApp · Web · Mail", icon: <MessageSquare className="h-4 w-4" /> },
-                { k: "Stack", v: "Individuelle Workflows · Automatisierte Kommunikation · KI", icon: <Cpu className="h-4 w-4" /> },
-              ].map((s) => (
-                <div key={s.k} className="rounded-2xl bg-white/5 border border-white/10 px-5 py-4">
-                  <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
-                    {s.icon}
-                    <span>{s.k}</span>
-                  </div>
-                  <div className="mt-1 text-sm text-slate-100">{s.v}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* Kompakte Value-Props (professioneller Look) */}
+<div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  {[
+    {
+      title: 'Einsatzbereiche',
+      text: 'Kundenservice · Backoffice · Vertrieb',
+      icon: <Layers className="h-4 w-4" />,
+    },
+    {
+      title: 'Schneller Start',
+      text: 'Go-Live in 2 Wochen',
+      icon: <Rocket className="h-4 w-4" />,
+    },
+    {
+      title: 'Kanäle',
+      text: 'WhatsApp · Webchat · E-Mail',
+      icon: <MessageSquare className="h-4 w-4" />,
+    },
+    {
+      title: 'Technologie',
+      text: 'Eigene Workflows · KI-gestützt',
+      icon: <Cpu className="h-4 w-4" />,
+    },
+  ].map((item) => (
+    <div
+      key={item.title}
+      className="group rounded-2xl border border-white/10 bg-white/5/50 backdrop-blur-sm px-5 py-4 hover:border-white/20 transition"
+      title={item.title}
+    >
+      <div className="flex items-start gap-3">
+        <div className="shrink-0 h-8 w-8 rounded-xl bg-white/8 border border-white/15 grid place-items-center">
+          {item.icon}
         </div>
-      </section>
+        <div className="min-w-0">
+          <div className="text-sm font-semibold text-slate-100">{item.title}</div>
+          <div className="mt-1 text-sm text-slate-300 truncate">{item.text}</div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
 
       {/* Vorteile */}
       <section id="benefits" className="py-16 text-center">
