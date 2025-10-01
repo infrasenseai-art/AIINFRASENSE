@@ -288,3 +288,40 @@ export default function Home() {
     </div>
   );
 }
+import Image from 'next/image';
+
+export default function Home() {
+  return (
+    <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+      
+      {/* Logo + Text nebeneinander */}
+      <div className="flex items-center gap-4 mt-8">
+        <Image 
+          src="/assets/logo.png"   // <---- dein Logo hier
+          alt="Infrasenseai Logo" 
+          width={80} 
+          height={80} 
+        />
+        <h1 className="text-4xl font-bold">Infrasenseai</h1>
+      </div>
+
+      {/* Untertitel */}
+      <p className="text-lg text-gray-300 mt-4 max-w-2xl text-center">
+        Automatisierung & Dialog für moderne Unternehmen. Wir bieten intelligente Workflows
+        und KI für messbar schnellere, bessere Kundenprozesse.
+      </p>
+
+      {/* Buttons */}
+      <div className="flex gap-4 mt-6">
+        <a href="#kontakt" className="px-6 py-3 bg-white text-black rounded-md">
+          Kostenloses Gespräch
+        </a>
+        <a href="#mehr" className="px-6 py-3 border border-white rounded-md">
+          Mehr erfahren
+        </a>
+      </div>
+      
+    </main>
+  );
+}
+
