@@ -1,6 +1,6 @@
 import { MessageSquare, Workflow, Brain, Zap, CheckCircle, Rocket, Users, Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers, Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle } from "lucide-react";
 import type { ComponentType } from "react";
-
+ 
 export default function Home() {
   // Icons als Komponenten-Referenzen (robust für TS)
   const featureIcons: Record<"starter"|"growth"|"enterprise", ComponentType<any>> = {
