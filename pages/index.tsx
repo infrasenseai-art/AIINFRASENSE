@@ -12,6 +12,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <div className="relative h-9 w-9">
+            {/* Logo: /public/assets/Logo.png */}
             <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
           </div>
           <span className="font-semibold text-lg tracking-wide">Infrasenseai</span>
@@ -67,11 +68,29 @@ export default function Home() {
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight">Infrasenseai</h1>
             </div>
             <p className="mt-6 text-lg text-slate-300 max-w-3xl mx-auto">
-              Automatisierung & Dialog für moderne Unternehmen. Wir kombinieren intelligente Workflows und KI – für messbar schnellere, bessere Kundenprozesse.
+              Automatisierung & Dialog für moderne Unternehmen. Wir kombinieren intelligente Workflows und KI – 
+              für messbar schnellere, bessere Kundenprozesse.
             </p>
             <div className="mt-8 flex items-center justify-center gap-3">
               <a href="#kontakt" className="px-5 py-3 rounded-xl bg-white text-[#0b0f19] font-medium">Kostenloses Gespräch</a>
               <a href="#benefits" className="px-5 py-3 rounded-xl border border-white/20 text-slate-200 hover:bg-white/5">Mehr erfahren</a>
+            </div>
+
+            {/* Hero-Stat Leiste */}
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                {k:'Einsatzbereiche', v:'Kundenservice · Backoffice · Vertrieb', icon:<Layers className="h-4 w-4"/>},
+                {k:'Schneller Start', v:'Go-Live in 2 Wochen', icon:<Rocket className="h-4 w-4"/>},
+                {k:'Kanäle', v:'WhatsApp · Web · Mail', icon:<MessageSquare className="h-4 w-4"/>},
+                {k:'Technologie', v:'Eigene Workflows · KI-gestützt', icon:<Cpu className="h-4 w-4"/>},
+              ].map((s)=> (
+                <div key={s.k} className="rounded-2xl bg-white/5 border border-white/10 px-5 py-4">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
+                    {s.icon}<span>{s.k}</span>
+                  </div>
+                  <div className="mt-1 text-sm text-slate-100">{s.v}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -108,46 +127,177 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ablauf */}
-      <section id="prozess" className="py-20">
+      {/* Leistungen */}
+      <section id="leistungen" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">In 2 Wochen startklar</h2>
-          <div className="mt-8 grid md:grid-cols-4 gap-6">
+          <h2 className="text-3xl font-bold">Leistungen</h2>
+          <p className="mt-3 text-slate-300 max-w-3xl">
+            Kommunikation, Automatisierung und KI – nahtlos kombiniert. Modular erweiterbar.
+          </p>
+          <div className="mt-10 grid md:grid-cols-3 gap-6">
             {[
-              {step:'01', icon:<CalendarClock className="h-5 w-5" />, title:'Kickoff & Ziele', desc:'Use-Cases priorisieren, Kennzahlen definieren, Zugänge klären.'},
-              {step:'02', icon:<PlugZap className="h-5 w-5" />, title:'Setup & Integrationen', desc:'Kanäle einrichten, Systeme anbinden, Datenflüsse planen.'},
-              {step:'03', icon:<Workflow className="h-5 w-5" />, title:'Workflows & KI', desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.'},
-              {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
-            ].map((p)=> (
-              <div key={p.step} className="relative p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
-                  {p.step}
+              {icon:<MessageSquare className="h-7 w-7 text-emerald-400" />, title: 'Omnichannel-Dialog', desc: 'WhatsApp, E-Mail & Webchat zentral steuern, Teams anbinden, Vorlagen & Routing.'},
+              {icon:<Workflow className="h-7 w-7 text-blue-400" />, title: 'Prozess-Automatisierung', desc: 'Tickets, Eskalationen, Monitoring, Reporting – zuverlässig und erweiterbar.'},
+              {icon:<Brain className="h-7 w-7 text-pink-400" />, title: 'KI-Assistenten', desc: 'Antwortvorschläge, Chatbots & Auto-Replies mit Übergabe an Agents.'},
+            ].map((f) => (
+              <div key={f.title} className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3">
+                  {f.icon}<span className="text-lg font-semibold">{f.title}</span>
                 </div>
-                <div className="flex items-center gap-3 mt-6">
-                  {p.icon}<span className="font-semibold">{p.title}</span>
-                </div>
-                <p className="mt-3 text-sm text-slate-300">{p.desc}</p>
+                <p className="mt-2 text-slate-300 text-sm">{f.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Kontakt mit Calendly */}
-      <section id="kontakt" className="py-20">
+      {/* Pakete */}
+      <section id="pakete" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold">Pakete</h2>
+          <p className="mt-3 text-slate-300">Klar strukturierte Leistungspakete – transparent & erweiterbar. Preise besprechen wir im Erstgespräch.</p>
+
+          <div className="mt-10 grid md:grid-cols-3 gap-6">
+            {[
+              {badge:'Starter', icon:featureIcons.starter, items:['Onboarding','1 Basis-Workflow','Standard-Templates & Quick-Replies','E-Mail Support']},
+              {badge:'Growth', icon:featureIcons.growth, items:['Alles aus Starter','KI-Antworten & Automatisierte Flows','3 zusätzliche Workflows','Monatliche Optimierung']},
+              {badge:'Enterprise', icon:featureIcons.enterprise, items:['Individuelle Integrationen (ERP/CRM)','Monitoring & Alarmierung','Priorisierte Umsetzung','Sicherheit & Compliance erweitert']},
+            ].map((p)=> (
+              <div key={p.badge} className={`relative p-6 rounded-2xl border ${p.badge==='Growth' ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]' : 'border-white/10 bg-white/5'}`}>
+                {/* kleine Ecken-Nummer optional: */}
+                <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
+                  {p.badge === 'Starter' ? '01' : p.badge === 'Growth' ? '02' : '03'}
+                </div>
+                <div className="flex items-center gap-2 text-sm font-semibold mt-6">
+                  <span className={`${p.badge==='Starter' ? 'text-emerald-300' : p.badge==='Enterprise' ? 'text-violet-300' : 'text-white'}`}>{p.badge}</span>
+                  <span className="opacity-80">•</span>
+                  <span className="text-slate-300 flex items-center gap-2">{p.icon} Paket</span>
+                </div>
+                <ul className="mt-4 text-sm text-slate-200 space-y-2 list-disc pl-5">
+                  {p.items.map((i)=> (<li key={i}>{i}</li>))}
+                </ul>
+                <a href="#kontakt" className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19]">
+                  {p.badge==='Enterprise' ? 'Gespräch vereinbaren' : p.badge==='Growth' ? 'Demo buchen' : 'Anfragen'}
+                  <ArrowRightCircle className="h-4 w-4" />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Ablauf */}
+      <section id="prozess" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold">In 2 Wochen startklar</h2>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 grid md:grid-cols-4 gap-6">
+          {[
+            {step:'01', icon:<CalendarClock className="h-5 w-5" />, title:'Kickoff & Ziele', desc:'Use-Cases priorisieren, Kennzahlen definieren, Zugänge klären.'},
+            {step:'02', icon:<PlugZap className="h-5 w-5" />, title:'Setup & Integrationen', desc:'Kanäle einrichten, Systeme anbinden, Datenflüsse planen.'},
+            {step:'03', icon:<Workflow className="h-5 w-5" />, title:'Workflows & KI', desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.'},
+            {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
+          ].map((p)=> (
+            <div key={p.step} className="relative p-6 rounded-2xl bg-white/5 border border-white/10">
+              <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
+                {p.step}
+              </div>
+              <div className="flex items-center gap-3 mt-6">
+                {p.icon}<span className="font-semibold">{p.title}</span>
+              </div>
+              <p className="mt-3 text-sm text-slate-300">{p.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Use Cases */}
+      <section id="cases" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold">Typische Use-Cases</h2>
+          <p className="mt-3 text-slate-300 max-w-3xl">So setzen Teams in unterschiedlichen Branchen mit uns schnell Wirkung frei.</p>
+          <div className="mt-10 grid md:grid-cols-3 gap-6">
+            {[
+              {icon:<Building2 className="h-6 w-6" />, title:'Kundenservice', items:['Routing nach Anliegen','Antwortvorschläge für Agents','CSAT-Automatisierung']},
+              {icon:<Settings className="h-6 w-6" />, title:'Operations', items:['Ticket-Priorisierung','Eskalations-Workflows','Monitoring & Alarme']},
+              {icon:<Star className="h-6 w-6" />, title:'Vertrieb', items:['Lead-Qualifizierung','Follow-up Auto-Mails','CRM-Sync (z. B. HubSpot)']},
+            ].map((c)=> (
+              <div key={c.title} className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3 font-semibold">{c.icon}<span>{c.title}</span></div>
+                <ul className="mt-3 text-sm text-slate-200 space-y-2 list-disc pl-5">
+                  {c.items.map((i)=> (<li key={i}>{i}</li>))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Über uns */}
+      <section id="about" className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-8">Kostenloses Erstgespräch buchen</h2>
+          <h2 className="text-3xl font-bold">Über uns</h2>
+          <p className="mt-3 text-slate-300">
+            Wir sind Infrasenseai – ein Team mit Leidenschaft für Automatisierung, KI und smarte Kommunikation.
+            Unser Ziel ist es, Unternehmen effizienter, kundenfreundlicher und zukunftssicher aufzustellen.
+          </p>
+        </div>
+      </section>
+
+      {/* Kontakt: Calendly + Formular */}
+      <section id="kontakt" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-8">Kontakt & Termin</h2>
           <p className="text-slate-300 text-center max-w-2xl mx-auto mb-10">
-            Wählen Sie direkt einen Termin in unserem Kalender aus – schnell, unkompliziert und verbindlich.
+            Buchen Sie direkt einen Termin über unseren Kalender – oder senden Sie uns eine kurze Nachricht.
           </p>
 
-          {/* Calendly Inline Widget */}
-          <div
-            className="calendly-inline-widget"
-            data-url="https://calendly.com/infrasenseai"
-            style={{ minWidth: "320px", height: "700px" }}
-          />
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+            {/* Calendly Inline Widget */}
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div
+                className="calendly-inline-widget"
+                data-url="https://calendly.com/infrasenseai"
+                style={{ minWidth: "320px", height: "700px" }}
+              />
+            </div>
+
+            {/* Einfaches Kontaktformular (mailto) */}
+            <form
+              className="p-6 rounded-2xl border border-white/10 bg-white/5 shadow-sm grid gap-4"
+              action="mailto:infrasenseai@gmail.com"
+              method="post"
+              encType="text/plain"
+            >
+              <div>
+                <label className="text-sm">Name</label>
+                <input className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="Ihr Name" name="name" required />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm">E-Mail</label>
+                  <input type="email" className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="name@firma.de" name="email" required />
+                </div>
+                <div>
+                  <label className="text-sm">Unternehmen</label>
+                  <input className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="Firmenname" name="company" />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm">Ihr Anliegen</label>
+                <textarea className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" rows={6} placeholder="Kurze Beschreibung Ihres Use-Cases" name="message" required />
+              </div>
+              <button className="mt-2 inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white text-[#0b0f19] hover:opacity-90">
+                Nachricht senden <ArrowRightCircle className="h-4 w-4" />
+              </button>
+              <div className="text-xs text-slate-400">
+                Mit Absenden stimmen Sie unserer Kontaktaufnahme zu. Wir teilen keine Daten mit Dritten.
+              </div>
+            </form>
+          </div>
         </div>
+
+        {/* Calendly Script */}
         <Script
           src="https://assets.calendly.com/assets/external/widget.js"
           strategy="lazyOnload"
