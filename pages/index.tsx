@@ -195,8 +195,9 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Über uns</h2>
           <p className="mt-3 text-slate-300">
-            Wir sind Infrasenseai – ein Team mit Leidenschaft für Automatisierung, KI und smarte Kommunikation.
-            Unser Ziel ist es, Unternehmen effizienter, kundenfreundlicher und zukunftssicher aufzustellen.
+Wir sind Infrasenseai – eine Agentur, die Unternehmen dabei unterstützt, ihre Prozesse radikal zu optimieren. Mit smarter Automatisierung, KI und innovativer Kommunikation sorgen wir dafür, dass unsere Kunden mehr erreichen mit weniger Aufwand: weniger Kosten, weniger Ressourcen, weniger Zeit – dafür mehr Ergebnisse, mehr Zufriedenheit und mehr Zukunftssicherheit.
+            
+Unser Ziel: Unternehmen leistungsfähiger, kundenorientierter und nachhaltiger aufzustellen – damit sie in einer digitalen Welt nicht nur mithalten, sondern vorausgehen.
           </p>
         </div>
       </section>
