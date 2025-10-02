@@ -2,8 +2,7 @@ import Image from "next/image";
 import Script from "next/script";
 import {
   MessageSquare, Workflow, Brain, Zap, CheckCircle, Rocket, Users,
-  Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
-  Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
+  Settings, ShieldCheck, Building2, CalendarClock, Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
 
 function Header() {
@@ -24,8 +23,6 @@ function Header() {
           <a href="#prozess" className="hover:text-white">Ablauf</a>
           <a href="#cases" className="hover:text-white">Use-Cases</a>
           <a href="#about" className="hover:text-white">Über uns</a>
-
-          {/* Weißer CTA-Button */}
           <a
             href="#termin"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19] shadow hover:opacity-90 transition"
@@ -46,13 +43,13 @@ export default function Home() {
   } as const;
 
   return (
-    <div className="min-h-screen relative text-slate-100 overflow-hidden bg-[#0b0f19]">
-      {/* Hintergrund (Bild + Overlay). Lege die Datei unter /public/assets/bg-waves.jpg ab */}
+    <div className="min-h-screen relative text-slate-100 overflow-hidden">
+      {/* Hintergrund – Milchstraße */}
       <div
         className="absolute inset-0 -z-10"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(11,15,25,0.65), rgba(11,15,25,0.85)), url('/assets/bg-waves.jpg')",
+            "linear-gradient(rgba(11,15,25,0.40), rgba(11,15,25,0.60)), url('/assets/milkyway-bg.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -101,7 +98,6 @@ export default function Home() {
               {icon: <BarChart4 className="h-6 w-6 text-violet-400" />, t:'Messbar besser', d:'Kürzere Antwortzeiten, weniger manuelle Arbeit.'},
             ].map((b, i)=> (
               <div key={b.t} className="relative rounded-2xl bg-gradient-to-b from-white/5 to-white/[0.03] border border-white/10 p-6">
-                {/* Nummern-Badge oben links */}
                 <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
                   {String(i+1).padStart(2,'0')}
                 </div>
@@ -190,7 +186,6 @@ export default function Home() {
                   {p.items.map((i)=> (<li key={i}>{i}</li>))}
                 </ul>
 
-                {/* Paket-CTA → #termin */}
                 <a
                   href="#termin"
                   className={`mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl ${
@@ -218,7 +213,6 @@ export default function Home() {
               {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
             ].map((p)=> (
               <div key={p.step} className="relative p-6 rounded-2xl bg-white/5 border border-white/10">
-                {/* Badge oben links */}
                 <div className="absolute -top-4 -left-4 h-12 w-12 rounded-2xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
                   {p.step}
                 </div>
@@ -254,7 +248,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Über uns – dein Text */}
+      {/* Über uns */}
       <section id="about" className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Über uns</h2>
@@ -273,7 +267,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Calendly Terminbuchung */}
+      {/* Calendly */}
       <section id="termin" className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-8">Termin buchen</h2>
@@ -287,7 +281,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Calendly Script */}
       <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="afterInteractive" />
 
       {/* Footer */}
