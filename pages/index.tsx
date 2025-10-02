@@ -145,29 +145,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ablauf */}
-      <section id="prozess" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">In 2 Wochen startklar</h2>
-          <div className="mt-8 grid md:grid-cols-4 gap-6">
-            {[
-              {step:'01', icon:<CalendarClock className="h-5 w-5" />, title:'Kickoff & Ziele', desc:'Use-Cases priorisieren, Kennzahlen definieren, Zugänge klären.'},
-              {step:'02', icon:<PlugZap className="h-5 w-5" />, title:'Setup & Integrationen', desc:'Kanäle einrichten, Systeme anbinden, Datenflüsse planen.'},
-              {step:'03', icon:<Workflow className="h-5 w-5" />, title:'Workflows & KI', desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.'},
-              {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
-            ].map((p)=> (
-              <div key={p.step} className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">{p.step}</div>
-                  <div className="flex items-center gap-2 font-semibold">{p.icon}<span>{p.title}</span></div>
-                </div>
-                <p className="mt-3 text-sm text-slate-300">{p.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     {/* Ablauf */}
+<section id="prozess" className="py-20">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 className="text-3xl font-bold">In 2 Wochen startklar</h2>
 
+    <div className="mt-8 grid md:grid-cols-4 gap-6">
+      {[
+        {step:'01', icon:<CalendarClock className="h-5 w-5" />, title:'Kickoff & Ziele', desc:'Use-Cases priorisieren, Kennzahlen definieren, Zugänge klären.'},
+        {step:'02', icon:<PlugZap className="h-5 w-5" />, title:'Setup & Integrationen', desc:'Kanäle einrichten, Systeme anbinden, Datenflüsse planen.'},
+        {step:'03', icon:<Workflow className="h-5 w-5" />, title:'Workflows & KI', desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.'},
+        {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
+      ].map((p)=> (
+        <div key={p.step} className="relative rounded-2xl bg-white/5 border border-white/10 p-6">
+          {/* Zahl-Badge wie bei den anderen Karten */}
+          <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
+            {p.step}
+          </div>
+
+          {/* restlicher Inhalt – mit kleinerem Top-Offset, damit das Badge Platz hat */}
+          <div className="mt-6 flex items-center gap-3">
+            <div className="flex items-center gap-2 font-semibold">
+              {p.icon}
+              <span>{p.title}</span>
+            </div>
+          </div>
+          <p className="mt-3 text-sm text-slate-300">{p.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+      
       {/* Use Cases */}
       <section id="cases" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
