@@ -314,7 +314,7 @@ export default function Home() {
   );
 }
 import { Resend } from 'resend';
-const resend = new Resend('re_123456789');
+const resend = new Resend('re_15P2BDkE_2SJqrVMH2SMj25rkQyCXhoak');
 
 (async function() {
   try {
