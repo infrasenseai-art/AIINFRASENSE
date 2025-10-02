@@ -1,0 +1,37 @@
+// pages/api/contact.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY!);
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const { name, email, company, message } = req.body || {};
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: 'Bitte Name, E-Mail und Nachricht ausfüllen.' });
+  }
+
+  try {
+    await resend.emails.send({
+      // Wenn du CONTACT_FROM nicht setzt, nutzt es den Fallback unten
+      from: process.env.CONTACT_FROM || 'Infrasenseai <onboarding@resend.dev>',
+      // Du kannst mehrere Empfänger per Komma in CONTACT_TO setzen
+      to: (process.env.CONTACT_TO || 'infrasenseai@gmail.com')
+        .split(',')
+        .map((s) => s.trim()),
+      subject: `Neue Anfrage von ${name}`,
+      reply_to: email,
+      text: `Name: ${name}
+E-Mail: ${email}
+Unternehmen: ${company || '-'}
+Nachricht:
+${message}`,
+    });
+
+    return res.status(200).json({ ok: true });
+  } catch (err: any) {
+    console.error('Resend error:', err);
+    return res.status(500).json({ error: err?.message || 'E-Mail Versand fehlgeschlagen' });
+  }
+}
