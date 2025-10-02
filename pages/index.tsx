@@ -1,5 +1,5 @@
+// pages/index.tsx
 import Image from "next/image";
-import Script from "next/script";
 import {
   MessageSquare, Workflow, Brain, Zap, CheckCircle, Rocket, Users,
   Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
@@ -12,7 +12,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <div className="relative h-9 w-9">
-            <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
+            <Image src="/assets/logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
           </div>
           <span className="font-semibold text-lg tracking-wide">Infrasenseai</span>
         </a>
@@ -23,8 +23,11 @@ function Header() {
           <a href="#prozess" className="hover:text-white">Ablauf</a>
           <a href="#cases" className="hover:text-white">Use-Cases</a>
           <a href="#about" className="hover:text-white">Über uns</a>
-          <a href="#termin" className="hover:text-white">Termin buchen</a>
+          <a href="#kontakt" className="hover:text-white">Kontakt</a>
         </nav>
+        <a href="#kontakt" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19] shadow hover:opacity-90 transition">
+          Jetzt anfragen
+        </a>
       </div>
     </header>
   );
@@ -39,13 +42,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative text-slate-100 overflow-hidden bg-[#0b0f19]">
-      {/* Hintergrund */}
+      {/* Hintergrundbild */}
       <div
         className="absolute inset-0 -z-10"
         style={{
           backgroundImage: "url('/assets/neon-blobs.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "center"
+          backgroundPosition: "center",
         }}
       >
         <div className="absolute inset-0 bg-[#0b0f19]/70" />
@@ -59,13 +62,35 @@ export default function Home() {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <div className="relative h-10 w-10 sm:h-12 sm:w-12">
-                <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
+                <Image src="/assets/logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
               </div>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight">Infrasenseai</h1>
             </div>
             <p className="mt-6 text-lg text-slate-300 max-w-3xl mx-auto">
-              Automatisierung & Dialog für moderne Unternehmen. Wir kombinieren intelligente Workflows und KI – für messbar schnellere, bessere Kundenprozesse.
+              Automatisierung & Dialog für moderne Unternehmen. Wir kombinieren
+              intelligente Workflows und KI – für messbar schnellere, bessere Kundenprozesse.
             </p>
+            <div className="mt-8 flex items-center justify-center gap-3">
+              <a href="#kontakt" className="px-5 py-3 rounded-xl bg-white text-[#0b0f19] font-medium">Kostenloses Gespräch</a>
+              <a href="#benefits" className="px-5 py-3 rounded-xl border border-white/20 text-slate-200 hover:bg-white/5">Mehr erfahren</a>
+            </div>
+
+            {/* Hero-Stats */}
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                {k:'Einsatzbereiche', v:'Kundenservice · Backoffice · Vertrieb', icon:<Layers className="h-4 w-4"/>},
+                {k:'Schneller Start', v:'Go-Live in 2 Wochen', icon:<Rocket className="h-4 w-4"/>},
+                {k:'Kanäle', v:'WhatsApp · Webchat · E-Mail', icon:<MessageSquare className="h-4 w-4"/>},
+                {k:'Technologie', v:'Eigene Workflows · KI-gestützt', icon:<Cpu className="h-4 w-4"/>},
+              ].map((s)=> (
+                <div key={s.k} className="rounded-2xl bg-white/5 border border-white/10 px-5 py-4">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
+                    {s.icon}<span>{s.k}</span>
+                  </div>
+                  <div className="mt-1 text-sm text-slate-100">{s.v}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -75,6 +100,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-slate-400 text-sm">Warum wir?</p>
           <h2 className="mt-2 text-3xl sm:text-4xl font-bold">Ihre Vorteile</h2>
+          <p className="mt-3 text-slate-300 max-w-3xl mx-auto">
+            Alle Bausteine, um Ihre Abläufe zu beschleunigen – mit Best Practices und messbaren Ergebnissen.
+          </p>
+
           <div className="mt-12 grid md:grid-cols-4 gap-6 text-left">
             {[
               {icon: <CheckCircle className="h-6 w-6 text-emerald-400" />, t:'Praxisnah', d:'Wir implementieren echte Workflows – vom ersten Use-Case bis zum Go-Live.'},
@@ -97,54 +126,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Leistungen */}
-      <section id="leistungen" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">Leistungen</h2>
-          <p className="mt-3 text-slate-300 max-w-3xl">Kommunikation, Automatisierung und KI – nahtlos kombiniert. Modular erweiterbar.</p>
-          <div className="mt-10 grid md:grid-cols-3 gap-6">
-            {[
-              {icon:<MessageSquare className="h-7 w-7 text-emerald-400" />, title: 'Omnichannel-Dialog', desc: 'WhatsApp, E-Mail & Webchat zentral steuern, Teams anbinden, Vorlagen & Routing.'},
-              {icon:<Workflow className="h-7 w-7 text-blue-400" />, title: 'Prozess-Automatisierung', desc: 'Tickets, Eskalationen, Monitoring, Reporting – zuverlässig und erweiterbar.'},
-              {icon:<Brain className="h-7 w-7 text-pink-400" />, title: 'KI-Assistenten', desc: 'Antwortvorschläge, Chatbots & Auto-Replies mit Übergabe an Agents.'},
-            ].map((f) => (
-              <div key={f.title} className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3">
-                  {f.icon}<span className="text-lg font-semibold">{f.title}</span>
-                </div>
-                <p className="mt-2 text-slate-300 text-sm">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pakete */}
-      <section id="pakete" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">Pakete</h2>
-          <p className="mt-3 text-slate-300">Klar strukturierte Leistungspakete – transparent & erweiterbar.</p>
-          <div className="mt-10 grid md:grid-cols-3 gap-6">
-            {[
-              {badge:'Starter', icon:featureIcons.starter, items:['Onboarding','1 Basis-Workflow','Standard-Templates & Quick-Replies','E-Mail Support']},
-              {badge:'Growth', icon:featureIcons.growth, items:['Alles aus Starter','KI-Antworten & Automatisierte Flows','3 zusätzliche Workflows','Monatliche Optimierung']},
-              {badge:'Enterprise', icon:featureIcons.enterprise, items:['Individuelle Integrationen (ERP/CRM)','Monitoring & Alarmierung','Priorisierte Umsetzung','Sicherheit & Compliance erweitert']},
-            ].map((p)=> (
-              <div key={p.badge} className={`p-6 rounded-2xl border ${p.badge==='Growth' ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]' : 'border-white/10 bg-white/5'}`}>
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <span className={`${p.badge==='Starter' ? 'text-emerald-300' : p.badge==='Enterprise' ? 'text-violet-300' : 'text-white'}`}>{p.badge}</span>
-                  <span className="opacity-80">•</span>
-                  <span className="text-slate-300 flex items-center gap-2">{p.icon} Paket</span>
-                </div>
-                <ul className="mt-4 text-sm text-slate-200 space-y-2 list-disc pl-5">
-                  {p.items.map((i)=> (<li key={i}>{i}</li>))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Ablauf */}
       <section id="prozess" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,10 +137,14 @@ export default function Home() {
               {step:'03', icon:<Workflow className="h-5 w-5" />, title:'Workflows & KI', desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.'},
               {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
             ].map((p)=> (
-              <div key={p.step} className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">{p.step}</div>
-                  <div className="flex items-center gap-2 font-semibold">{p.icon}<span>{p.title}</span></div>
+              <div key={p.step} className="relative p-6 rounded-2xl bg-white/5 border border-white/10">
+                <div className="absolute -top-3 -left-3 px-2 py-1 rounded-md bg-white/10 border border-white/20 text-xs font-semibold">
+                  {p.step}
+                </div>
+                <div className="flex items-center gap-3 mt-4">
+                  <div className="flex items-center gap-2 font-semibold">
+                    {p.icon}<span>{p.title}</span>
+                  </div>
                 </div>
                 <p className="mt-3 text-sm text-slate-300">{p.desc}</p>
               </div>
@@ -168,62 +153,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Use Cases */}
-      <section id="cases" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">Typische Use-Cases</h2>
-          <p className="mt-3 text-slate-300 max-w-3xl">So setzen Teams in unterschiedlichen Branchen mit uns schnell Wirkung frei.</p>
-          <div className="mt-10 grid md:grid-cols-3 gap-6">
-            {[
-              {icon:<Building2 className="h-6 w-6" />, title:'Kundenservice', items:['Routing nach Anliegen','Antwortvorschläge für Agents','CSAT-Automatisierung']},
-              {icon:<Settings className="h-6 w-6" />, title:'Operations', items:['Ticket-Priorisierung','Eskalations-Workflows','Monitoring & Alarme']},
-              {icon:<Star className="h-6 w-6" />, title:'Vertrieb', items:['Lead-Qualifizierung','Follow-up Auto-Mails','CRM-Sync (z. B. HubSpot)']},
-            ].map((c)=> (
-              <div key={c.title} className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3 font-semibold">{c.icon}<span>{c.title}</span></div>
-                <ul className="mt-3 text-sm text-slate-200 space-y-2 list-disc pl-5">
-                  {c.items.map((i)=> (<li key={i}>{i}</li>))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Über uns */}
-      <section id="about" className="py-20">
+      {/* Kontakt mit Calendly */}
+      <section id="kontakt" className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">Über uns</h2>
+          <h2 className="text-3xl font-bold">Kostenloses Erstgespräch buchen</h2>
           <p className="mt-3 text-slate-300">
-            Wir sind Infrasenseai – ein Team mit Leidenschaft für Automatisierung, KI und smarte Kommunikation.
-            Unser Ziel ist es, Unternehmen effizienter, kundenfreundlicher und zukunftssicher aufzustellen.
+            Buche direkt einen Termin über Calendly.
           </p>
-        </div>
-      </section>
-
-      {/* Calendly Terminbuchung */}
-      <section id="termin" className="py-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-8">Termin buchen</h2>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <div
-              className="calendly-inline-widget"
-              data-url="https://calendly.com/infrasenseai/discovery-call"
-              style={{ minWidth: "320px", height: "700px" }}
-            />
+          <div className="mt-8">
+            <div className="calendly-inline-widget" data-url="https://calendly.com/infrasenseai/discovery-call" style={{minWidth:'320px', height:'700px'}} />
+            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async />
           </div>
         </div>
       </section>
-
-      {/* Calendly Script */}
-      <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="afterInteractive" />
 
       {/* Footer */}
       <footer className="py-10 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="relative h-8 w-8">
-              <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" />
+              <Image src="/assets/logo.png" alt="Infrasenseai Logo" fill className="object-contain" />
             </div>
             <span className="text-sm">© {new Date().getFullYear()} Infrasenseai – Alle Rechte vorbehalten.</span>
           </div>
