@@ -261,36 +261,77 @@ export default function Home() {
               />
             </div>
 
-            {/* Kontaktformular (Dummy) */}
-            <form className="p-6 rounded-2xl border border-white/10 bg-white/5 shadow-sm grid gap-4">
-              <div>
-                <label className="text-sm">Name</label>
-                <input className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="Ihr Name" />
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm">E-Mail</label>
-                  <input type="email" className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="name@firma.de" />
-                </div>
-                <div>
-                  <label className="text-sm">Unternehmen</label>
-                  <input className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="Firmenname" />
-                </div>
-              </div>
-              <div>
-                <label className="text-sm">Ihr Anliegen</label>
-                <textarea className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" rows={6} placeholder="Kurze Beschreibung Ihres Use-Cases" />
-              </div>
-              <button className="mt-2 inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white text-[#0b0f19] hover:opacity-90">
-                Anfrage senden <ArrowRightCircle className="h-4 w-4" />
-              </button>
-              <div className="text-xs text-slate-400">
-                Mit Absenden stimmen Sie unserer Kontaktaufnahme zu. Wir teilen keine Daten mit Dritten.
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
+           <form
+  className="p-6 rounded-2xl border border-white/10 bg-white/5 shadow-sm grid gap-4"
+  onSubmit={async (e) => {
+    e.preventDefault();
+    const f = e.currentTarget as HTMLFormElement;
+    const fd = new FormData(f);
+
+    // WICHTIG: Diese Keys müssen genauso heißen wie in /api/contact.ts
+    const payload = {
+      name: String(fd.get('name') || ''),
+      email: String(fd.get('email') || ''),
+      company: String(fd.get('company') || ''),
+      message: String(fd.get('message') || ''),
+      website: String(fd.get('website') || ''), // Honeypot (versteckt)
+    };
+
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.ok) {
+      alert('Danke! Ihre Anfrage wurde gesendet.');
+      f.reset();
+    } else {
+      alert(`Fehler: ${json.error || 'Senden fehlgeschlagen'}`);
+    }
+  }}
+>
+  {/* Honeypot gegen Bots (unsichtbar lassen) */}
+  <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
+
+  <div>
+    <label className="text-sm">Name</label>
+    <input name="name" required
+      className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2"
+      placeholder="Ihr Name" />
+  </div>
+
+  <div className="grid sm:grid-cols-2 gap-4">
+    <div>
+      <label className="text-sm">E-Mail</label>
+      <input type="email" name="email" required
+        className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2"
+        placeholder="name@firma.de" />
+    </div>
+    <div>
+      <label className="text-sm">Unternehmen</label>
+      <input name="company"
+        className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2"
+        placeholder="Firmenname" />
+    </div>
+  </div>
+
+  <div>
+    <label className="text-sm">Ihr Anliegen</label>
+    <textarea name="message" required rows={5}
+      className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2"
+      placeholder="Kurze Beschreibung Ihres Use-Cases" />
+  </div>
+
+  <button type="submit"
+    className="mt-2 inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white text-[#0b0f19] hover:opacity-90">
+    Anfrage senden
+  </button>
+  <div className="text-xs text-slate-400 mt-1">
+    Mit Absenden stimmen Sie unserer Kontaktaufnahme zu. Wir teilen keine Daten mit Dritten.
+  </div>
+</form>
 
       {/* Footer */}
       <footer className="py-10 border-t border-white/10">
