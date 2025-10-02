@@ -27,3 +27,7 @@
     "node": "20.x"
   }
 }
+npm install resend
+# oder: yarn add resend
+# oder: pnpm add resend
+
