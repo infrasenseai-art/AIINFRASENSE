@@ -46,20 +46,18 @@ export default function Home() {
   } as const;
 
   return (
-    <div className="min-h-screen relative text-slate-100 overflow-hidden">
-     {/* Hintergrund */}
-<div className="absolute inset-0 z-0">
-  <Image
-    src="/assets/bg-waves.jpg"   // <— exakt so, du hast es so benannt
-    alt=""
-    fill
-    priority
-    className="object-cover"
-  />
-  {/* dunkles Overlay damit Text gut lesbar bleibt */}
-  <div className="absolute inset-0 bg-[#0b0f19]/75" />
-</div>
-
+    <div className="min-h-screen relative text-slate-100 overflow-hidden bg-[#0b0f19]">
+      {/* Hintergrund (Bild + Overlay). Lege die Datei unter /public/assets/bg-waves.jpg ab */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(11,15,25,0.65), rgba(11,15,25,0.85)), url('/assets/bg-waves.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
 
       <Header />
 
