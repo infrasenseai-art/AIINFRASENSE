@@ -12,7 +12,6 @@ function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <div className="relative h-9 w-9">
-            {/* Logo: /public/assets/Logo.png */}
             <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
           </div>
           <span className="font-semibold text-lg tracking-wide">Infrasenseai</span>
@@ -43,7 +42,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative text-slate-100 overflow-hidden bg-[#0b0f19]">
-      {/* Hintergrundbild */}
       <div
         className="absolute inset-0 -z-10"
         style={{
@@ -76,7 +74,6 @@ export default function Home() {
               <a href="#benefits" className="px-5 py-3 rounded-xl border border-white/20 text-slate-200 hover:bg-white/5">Mehr erfahren</a>
             </div>
 
-            {/* Hero-Stat Leiste */}
             <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 {k:'Einsatzbereiche', v:'Kundenservice · Backoffice · Vertrieb', icon:<Layers className="h-4 w-4"/>},
@@ -164,7 +161,6 @@ export default function Home() {
               {badge:'Enterprise', icon:featureIcons.enterprise, items:['Individuelle Integrationen (ERP/CRM)','Monitoring & Alarmierung','Priorisierte Umsetzung','Sicherheit & Compliance erweitert']},
             ].map((p)=> (
               <div key={p.badge} className={`relative p-6 rounded-2xl border ${p.badge==='Growth' ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]' : 'border-white/10 bg-white/5'}`}>
-                {/* kleine Ecken-Nummer optional: */}
                 <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
                   {p.badge === 'Starter' ? '01' : p.badge === 'Growth' ? '02' : '03'}
                 </div>
@@ -253,69 +249,9 @@ export default function Home() {
           </p>
 
           <div className="grid lg:grid-cols-2 gap-10 items-start">
-            {/* Calendly Inline Widget */}
+            {/* Calendly Inline Widget mit Discovery-Call */}
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <div
                 className="calendly-inline-widget"
-                data-url="https://calendly.com/infrasenseai"
-                style={{ minWidth: "320px", height: "700px" }}
-              />
-            </div>
-
-            {/* Einfaches Kontaktformular (mailto) */}
-            <form
-              className="p-6 rounded-2xl border border-white/10 bg-white/5 shadow-sm grid gap-4"
-              action="mailto:infrasenseai@gmail.com"
-              method="post"
-              encType="text/plain"
-            >
-              <div>
-                <label className="text-sm">Name</label>
-                <input className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="Ihr Name" name="name" required />
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm">E-Mail</label>
-                  <input type="email" className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="name@firma.de" name="email" required />
-                </div>
-                <div>
-                  <label className="text-sm">Unternehmen</label>
-                  <input className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" placeholder="Firmenname" name="company" />
-                </div>
-              </div>
-              <div>
-                <label className="text-sm">Ihr Anliegen</label>
-                <textarea className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 placeholder-slate-400" rows={6} placeholder="Kurze Beschreibung Ihres Use-Cases" name="message" required />
-              </div>
-              <button className="mt-2 inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white text-[#0b0f19] hover:opacity-90">
-                Nachricht senden <ArrowRightCircle className="h-4 w-4" />
-              </button>
-              <div className="text-xs text-slate-400">
-                Mit Absenden stimmen Sie unserer Kontaktaufnahme zu. Wir teilen keine Daten mit Dritten.
-              </div>
-            </form>
-          </div>
-        </div>
-
-        {/* Calendly Script */}
-        <Script
-          src="https://assets.calendly.com/assets/external/widget.js"
-          strategy="lazyOnload"
-        />
-      </section>
-
-      {/* Footer */}
-      <footer className="py-10 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="relative h-8 w-8">
-              <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" />
-            </div>
-            <span className="text-sm">© {new Date().getFullYear()} Infrasenseai – Alle Rechte vorbehalten.</span>
-          </div>
-          <div className="text-xs text-slate-400">Impressum · Datenschutz</div>
-        </div>
-      </footer>
-    </div>
-  );
-}
+                data-url="https://calendly.com/infrasenseai/discovery-call"
+                style
