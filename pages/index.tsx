@@ -1,40 +1,18 @@
 // pages/index.tsx
 import Image from "next/image";
 import {
-  MessageSquare,
-  Workflow,
-  Brain,
-  Zap,
-  CheckCircle,
-  Rocket,
-  Users,
-  Settings,
-  ShieldCheck,
-  Building2,
-  CalendarClock,
-  Cpu,
-  Layers,
-  Sparkles,
-  PlugZap,
-  BarChart4,
-  Star,
-  ArrowRightCircle,
+  MessageSquare, Workflow, Brain, Zap, CheckCircle, Rocket, Users,
+  Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
+  Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
 
-// Header
 function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0b0f19]/65 backdrop-blur">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <div className="relative h-9 w-9">
-            <Image
-              src="/assets/Logo.png"
-              alt="Infrasenseai Logo"
-              fill
-              className="object-contain"
-              priority
-            />
+            <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
           </div>
           <span className="font-semibold text-lg tracking-wide">Infrasenseai</span>
         </a>
@@ -49,10 +27,7 @@ function Header() {
           <a href="#kontakt" className="hover:text-white">Kontakt</a>
         </nav>
 
-        <a
-          href="#kontakt"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19] shadow hover:opacity-90 transition"
-        >
+        <a href="#kontakt" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19] shadow hover:opacity-90 transition">
           Jetzt anfragen
         </a>
       </div>
@@ -69,7 +44,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative text-slate-100 overflow-hidden bg-[#0b0f19]">
-      {/* Hintergrundbild */}
+      {/* Hintergrund */}
       <div
         className="absolute inset-0 -z-10"
         style={{
@@ -83,53 +58,34 @@ export default function Home() {
 
       <Header />
 
-      {/* HERO + Slogan */}
+      {/* HERO mit Slogan */}
       <section className="relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
               <div className="relative h-10 w-10 sm:h-12 sm:w-12">
-                <Image
-                  src="/assets/Logo.png"
-                  alt="Infrasenseai Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
+                <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
               </div>
-              <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight">
-                Infrasenseai
-              </h1>
+              <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight">Infrasenseai</h1>
             </div>
 
             <p className="mt-6 text-lg text-slate-300 max-w-3xl mx-auto">
-              Automatisierung & Dialog für moderne Unternehmen. <br />
-              Wir kombinieren intelligente Workflows und KI – für messbar
-              schnellere, bessere Kundenprozesse.
+              Automatisierung & Dialog für moderne Unternehmen. Wir kombinieren intelligente Workflows und KI – für
+              messbar schnellere, bessere Kundenprozesse.
             </p>
 
             <div className="mt-8 flex items-center justify-center gap-3">
-              <a
-                href="#kontakt"
-                className="px-5 py-3 rounded-xl bg-white text-[#0b0f19] font-medium"
-              >
-                Kostenloses Gespräch
-              </a>
-              <a
-                href="#benefits"
-                className="px-5 py-3 rounded-xl border border-white/20 text-slate-200 hover:bg-white/5"
-              >
-                Mehr erfahren
-              </a>
+              <a href="#kontakt" className="px-5 py-3 rounded-xl bg-white text-[#0b0f19] font-medium">Kostenloses Gespräch</a>
+              <a href="#benefits" className="px-5 py-3 rounded-xl border border-white/20 text-slate-200 hover:bg-white/5">Mehr erfahren</a>
             </div>
 
             {/* Hero-Stats */}
             <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                {k:'Anwendungsfälle', v:'Service · Ops · Vertrieb', icon:<Layers className="h-4 w-4"/>},
-                {k:'Kickstart', v:'Go-Live in 2 Wochen', icon:<Rocket className="h-4 w-4"/>},
+                {k:'Einsatzbereiche', v:'Kundenservice · Backoffice · Vertrieb', icon:<Layers className="h-4 w-4"/>},
+                {k:'Schneller Start', v:'Go-Live in 2 Wochen', icon:<Rocket className="h-4 w-4"/>},
                 {k:'Kanäle', v:'WhatsApp · Web · Mail', icon:<MessageSquare className="h-4 w-4"/>},
-                {k:'Stack', v:'Individuelle Workflows · Automatisierte Kommunikation · KI', icon:<Cpu className="h-4 w-4"/>},
+                {k:'Technologie', v:'Eigene Workflows · KI-gestützt', icon:<Cpu className="h-4 w-4"/>},
               ].map((s)=> (
                 <div key={s.k} className="rounded-2xl bg-white/5 border border-white/10 px-5 py-4">
                   <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
@@ -143,7 +99,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Vorteile */}
+      {/* VORTEILE */}
       <section id="benefits" className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-slate-400 text-sm">Warum wir?</p>
@@ -160,9 +116,11 @@ export default function Home() {
               {icon: <BarChart4 className="h-6 w-6 text-violet-400" />, t:'Messbar besser', d:'Kürzere Antwortzeiten, weniger manuelle Arbeit.'},
             ].map((b, i)=> (
               <div key={b.t} className="relative rounded-2xl bg-gradient-to-b from-white/5 to-white/[0.03] border border-white/10 p-6">
+                {/* Nummer oben links */}
                 <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
                   {String(i+1).padStart(2,'0')}
                 </div>
+
                 <div className="flex items-center gap-3 mt-6">
                   {b.icon}
                   <span className="font-semibold">{b.t}</span>
@@ -174,13 +132,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Leistungen */}
+      {/* LEISTUNGEN */}
       <section id="leistungen" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Leistungen</h2>
           <p className="mt-3 text-slate-300 max-w-3xl">
             Kommunikation, Automatisierung und KI – nahtlos kombiniert. Modular erweiterbar.
           </p>
+
           <div className="mt-10 grid md:grid-cols-3 gap-6">
             {[
               {icon:<MessageSquare className="h-7 w-7 text-emerald-400" />, title: 'Omnichannel-Dialog', desc: 'WhatsApp, E-Mail & Webchat zentral steuern, Teams anbinden, Vorlagen & Routing.'},
@@ -198,52 +157,79 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pakete */}
+      {/* PAKETE */}
       <section id="pakete" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Pakete</h2>
           <p className="mt-3 text-slate-300">Klar strukturierte Leistungspakete – transparent & erweiterbar. Preise besprechen wir im Erstgespräch.</p>
 
-          <div className="mt-10 grid md:grid-cols-3 gap-6">
-            {[
-              {badge:'Starter', icon:featureIcons.starter, items:['Onboarding','1 Basis-Workflow','Standard-Templates & Quick-Replies','E-Mail Support']},
-              {badge:'Growth', icon:featureIcons.growth, items:['Alles aus Starter','KI-Antworten & Automatisierte Flows','3 zusätzliche Workflows','Monatliche Optimierung']},
-              {badge:'Enterprise', icon:featureIcons.enterprise, items:['Individuelle Integrationen (ERP/CRM)','Monitoring & Alarmierung','Priorisierte Umsetzung','Sicherheit & Compliance erweitert']},
-            ].map((p)=> (
-              <div key={p.badge} className={`p-6 rounded-2xl border ${p.badge==='Growth' ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]' : 'border-white/10 bg-white/5'}`}>
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <span className={`${p.badge==='Starter' ? 'text-emerald-300' : p.badge==='Enterprise' ? 'text-violet-300' : 'text-white'}`}>{p.badge}</span>
-                  <span className="opacity-80">•</span>
-                  <span className="text-slate-300 flex items-center gap-2">{p.icon} Paket</span>
-                </div>
-                <ul className="mt-4 text-sm text-slate-200 space-y-2 list-disc pl-5">
-                  {p.items.map((i)=> (<li key={i}>{i}</li>))}
-                </ul>
-                <a href="#kontakt" className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19]">
-                  {p.badge==='Enterprise' ? 'Gespräch vereinbaren' : p.badge==='Growth' ? 'Demo buchen' : 'Anfragen'}
-                  <ArrowRightCircle className="h-4 w-4" />
-                </a>
+        <div className="mt-10 grid md:grid-cols-3 gap-6">
+          {[
+            {badge:'Starter', icon:featureIcons.starter, items:['Onboarding','1 Basis-Workflow','Standard-Templates & Quick-Replies','E-Mail Support']},
+            {badge:'Growth', icon:featureIcons.growth, items:['Alles aus Starter','KI-Antworten & Automatisierte Flows','3 zusätzliche Workflows','Monatliche Optimierung']},
+            {badge:'Enterprise', icon:featureIcons.enterprise, items:['Individuelle Integrationen (ERP/CRM)','Monitoring & Alarmierung','Priorisierte Umsetzung','Sicherheit & Compliance erweitert']},
+          ].map((p)=> (
+            <div key={p.badge} className={`p-6 rounded-2xl border ${p.badge==='Growth' ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]' : 'border-white/10 bg-white/5'}`}>
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <span className={`${p.badge==='Starter' ? 'text-emerald-300' : p.badge==='Enterprise' ? 'text-violet-300' : 'text-white'}`}>{p.badge}</span>
+                <span className="opacity-80">•</span>
+                <span className="text-slate-300 flex items-center gap-2">{p.icon} Paket</span>
               </div>
-            ))}
-          </div>
+              <ul className="mt-4 text-sm text-slate-200 space-y-2 list-disc pl-5">
+                {p.items.map((i)=> (<li key={i}>{i}</li>))}
+              </ul>
+              <a href="#kontakt" className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19]">
+                {p.badge==='Enterprise' ? 'Gespräch vereinbaren' : p.badge==='Growth' ? 'Demo buchen' : 'Anfragen'}
+                <ArrowRightCircle className="h-4 w-4" />
+              </a>
+            </div>
+          ))}
+        </div>
         </div>
       </section>
 
-      {/* Ablauf */}
+      {/* ABLAUF – Zahlen oben links */}
       <section id="prozess" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">In 2 Wochen startklar</h2>
-          <div className="mt-8 grid md:grid-cols-4 gap-6">
+
+          <div className="mt-8 grid lg:grid-cols-4 gap-6">
             {[
-              {step:'01', icon:<CalendarClock className="h-5 w-5" />, title:'Kickoff & Ziele', desc:'Use-Cases priorisieren, Kennzahlen definieren, Zugänge klären.'},
-              {step:'02', icon:<PlugZap className="h-5 w-5" />, title:'Setup & Integrationen', desc:'Kanäle einrichten, Systeme anbinden, Datenflüsse planen.'},
-              {step:'03', icon:<Workflow className="h-5 w-5" />, title:'Workflows & KI', desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.'},
-              {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
+              {
+                step:'01',
+                icon:<CalendarClock className="h-5 w-5" />,
+                title:'Kickoff & Ziele',
+                desc:'Use-Cases priorisieren, Kennzahlen definieren, Zugänge klären.',
+              },
+              {
+                step:'02',
+                icon:<PlugZap className="h-5 w-5" />,
+                title:'Setup & Integrationen',
+                desc:'Kanäle einrichten, Systeme anbinden, Datenflüsse planen.',
+              },
+              {
+                step:'03',
+                icon:<Workflow className="h-5 w-5" />,
+                title:'Workflows & KI',
+                desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.',
+              },
+              {
+                step:'04',
+                icon:<ShieldCheck className="h-5 w-5" />,
+                title:'Go-Live & Betreuung',
+                desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.',
+              },
             ].map((p)=> (
-              <div key={p.step} className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">{p.step}</div>
-                  <div className="flex items-center gap-2 font-semibold">{p.icon}<span>{p.title}</span></div>
+              <div key={p.step} className="relative p-6 rounded-2xl bg-white/5 border border-white/10">
+                {/* Badge oben links */}
+                <div className="absolute -top-3 -left-3 h-12 w-12 rounded-2xl bg-white/10 border border-white/20 grid place-items-center text-base font-semibold">
+                  {p.step}
+                </div>
+
+                <div className="flex items-center gap-3 mt-6">
+                  <div className="flex items-center gap-2 font-semibold">
+                    {p.icon}<span>{p.title}</span>
+                  </div>
                 </div>
                 <p className="mt-3 text-sm text-slate-300">{p.desc}</p>
               </div>
@@ -252,11 +238,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Use Cases */}
+      {/* USE-CASES */}
       <section id="cases" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Typische Use-Cases</h2>
           <p className="mt-3 text-slate-300 max-w-3xl">So setzen Teams in unterschiedlichen Branchen mit uns schnell Wirkung frei.</p>
+
           <div className="mt-10 grid md:grid-cols-3 gap-6">
             {[
               {icon:<Building2 className="h-6 w-6" />, title:'Kundenservice', items:['Routing nach Anliegen','Antwortvorschläge für Agents','CSAT-Automatisierung']},
@@ -274,7 +261,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Über uns */}
+      {/* ÜBER UNS */}
       <section id="about" className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Über uns</h2>
@@ -285,7 +272,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Kontakt */}
+      {/* KONTAKT */}
       <section id="kontakt" className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 items-start">
           <div>
@@ -298,6 +285,7 @@ export default function Home() {
               <div className="mt-2 text-xs text-slate-400">infrasenseai@gmail.com</div>
             </div>
           </div>
+
           <form className="p-6 rounded-2xl border border-white/10 bg-white/5 shadow-sm grid gap-4">
             <div>
               <label className="text-sm">Name</label>
@@ -325,7 +313,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* FOOTER */}
       <footer className="py-10 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
