@@ -1,4 +1,3 @@
-// pages/index.tsx
 import Image from "next/image";
 import Script from "next/script";
 import {
@@ -24,11 +23,8 @@ function Header() {
           <a href="#prozess" className="hover:text-white">Ablauf</a>
           <a href="#cases" className="hover:text-white">Use-Cases</a>
           <a href="#about" className="hover:text-white">Über uns</a>
-          <a href="#kontakt" className="hover:text-white">Kontakt</a>
+          <a href="#termin" className="hover:text-white">Termin buchen</a>
         </nav>
-        <a href="#kontakt" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19] shadow hover:opacity-90 transition">
-          Jetzt anfragen
-        </a>
       </div>
     </header>
   );
@@ -49,7 +45,7 @@ export default function Home() {
         style={{
           backgroundImage: "url('/assets/neon-blobs.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center"
         }}
       >
         <div className="absolute inset-0 bg-[#0b0f19]/70" />
@@ -62,36 +58,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3">
-              <div className="relative h-12 w-12 sm:h-14 sm:w-14">
+              <div className="relative h-10 w-10 sm:h-12 sm:w-12">
                 <Image src="/assets/Logo.png" alt="Infrasenseai Logo" fill className="object-contain" priority />
               </div>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight">Infrasenseai</h1>
             </div>
             <p className="mt-6 text-lg text-slate-300 max-w-3xl mx-auto">
-              Automatisierung & Dialog für moderne Unternehmen. Wir kombinieren intelligente Workflows und KI – 
-              für messbar schnellere, bessere Kundenprozesse.
+              Automatisierung & Dialog für moderne Unternehmen. Wir kombinieren intelligente Workflows und KI – für messbar schnellere, bessere Kundenprozesse.
             </p>
-            <div className="mt-8 flex items-center justify-center gap-3">
-              <a href="#kontakt" className="px-5 py-3 rounded-xl bg-white text-[#0b0f19] font-medium">Kostenloses Gespräch</a>
-              <a href="#benefits" className="px-5 py-3 rounded-xl border border-white/20 text-slate-200 hover:bg-white/5">Mehr erfahren</a>
-            </div>
-
-            {/* Top-Badges */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                {k:'Einsatzbereiche', v:'Kundenservice · Backoffice · Vertrieb', icon:<Layers className="h-4 w-4"/>},
-                {k:'Schneller Start', v:'Go-Live in 2 Wochen', icon:<Rocket className="h-4 w-4"/>},
-                {k:'Kanäle', v:'WhatsApp · Web · Mail', icon:<MessageSquare className="h-4 w-4"/>},
-                {k:'Technologie', v:'Eigene Workflows · KI-gestützt', icon:<Cpu className="h-4 w-4"/>},
-              ].map((s)=> (
-                <div key={s.k} className="rounded-2xl bg-white/5 border border-white/10 px-5 py-4">
-                  <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
-                    {s.icon}<span>{s.k}</span>
-                  </div>
-                  <div className="mt-1 text-sm text-slate-100">{s.v}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -101,10 +75,6 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-slate-400 text-sm">Warum wir?</p>
           <h2 className="mt-2 text-3xl sm:text-4xl font-bold">Ihre Vorteile</h2>
-          <p className="mt-3 text-slate-300 max-w-3xl mx-auto">
-            Alle Bausteine, um Ihre Abläufe zu beschleunigen – mit Best Practices und messbaren Ergebnissen.
-          </p>
-
           <div className="mt-12 grid md:grid-cols-4 gap-6 text-left">
             {[
               {icon: <CheckCircle className="h-6 w-6 text-emerald-400" />, t:'Praxisnah', d:'Wir implementieren echte Workflows – vom ersten Use-Case bis zum Go-Live.'},
@@ -131,9 +101,7 @@ export default function Home() {
       <section id="leistungen" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Leistungen</h2>
-          <p className="mt-3 text-slate-300 max-w-3xl">
-            Kommunikation, Automatisierung und KI – nahtlos kombiniert. Modular erweiterbar.
-          </p>
+          <p className="mt-3 text-slate-300 max-w-3xl">Kommunikation, Automatisierung und KI – nahtlos kombiniert. Modular erweiterbar.</p>
           <div className="mt-10 grid md:grid-cols-3 gap-6">
             {[
               {icon:<MessageSquare className="h-7 w-7 text-emerald-400" />, title: 'Omnichannel-Dialog', desc: 'WhatsApp, E-Mail & Webchat zentral steuern, Teams anbinden, Vorlagen & Routing.'},
@@ -155,19 +123,15 @@ export default function Home() {
       <section id="pakete" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Pakete</h2>
-          <p className="mt-3 text-slate-300">Klar strukturierte Leistungspakete – transparent & erweiterbar. Preise besprechen wir im Erstgespräch.</p>
-
+          <p className="mt-3 text-slate-300">Klar strukturierte Leistungspakete – transparent & erweiterbar.</p>
           <div className="mt-10 grid md:grid-cols-3 gap-6">
             {[
               {badge:'Starter', icon:featureIcons.starter, items:['Onboarding','1 Basis-Workflow','Standard-Templates & Quick-Replies','E-Mail Support']},
               {badge:'Growth', icon:featureIcons.growth, items:['Alles aus Starter','KI-Antworten & Automatisierte Flows','3 zusätzliche Workflows','Monatliche Optimierung']},
               {badge:'Enterprise', icon:featureIcons.enterprise, items:['Individuelle Integrationen (ERP/CRM)','Monitoring & Alarmierung','Priorisierte Umsetzung','Sicherheit & Compliance erweitert']},
             ].map((p)=> (
-              <div key={p.badge} className={`relative p-6 rounded-2xl border ${p.badge==='Growth' ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]' : 'border-white/10 bg-white/5'}`}>
-                <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
-                  {p.badge === 'Starter' ? '01' : p.badge === 'Growth' ? '02' : '03'}
-                </div>
-                <div className="flex items-center gap-2 text-sm font-semibold mt-6">
+              <div key={p.badge} className={`p-6 rounded-2xl border ${p.badge==='Growth' ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]' : 'border-white/10 bg-white/5'}`}>
+                <div className="flex items-center gap-2 text-sm font-semibold">
                   <span className={`${p.badge==='Starter' ? 'text-emerald-300' : p.badge==='Enterprise' ? 'text-violet-300' : 'text-white'}`}>{p.badge}</span>
                   <span className="opacity-80">•</span>
                   <span className="text-slate-300 flex items-center gap-2">{p.icon} Paket</span>
@@ -175,10 +139,6 @@ export default function Home() {
                 <ul className="mt-4 text-sm text-slate-200 space-y-2 list-disc pl-5">
                   {p.items.map((i)=> (<li key={i}>{i}</li>))}
                 </ul>
-                <a href="#kontakt" className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19]">
-                  {p.badge==='Enterprise' ? 'Gespräch vereinbaren' : p.badge==='Growth' ? 'Demo buchen' : 'Anfragen'}
-                  <ArrowRightCircle className="h-4 w-4" />
-                </a>
               </div>
             ))}
           </div>
@@ -189,24 +149,22 @@ export default function Home() {
       <section id="prozess" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">In 2 Wochen startklar</h2>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 grid md:grid-cols-4 gap-6">
-          {[
-            {step:'01', icon:<CalendarClock className="h-5 w-5" />, title:'Kickoff & Ziele', desc:'Use-Cases priorisieren, Kennzahlen definieren, Zugänge klären.'},
-            {step:'02', icon:<PlugZap className="h-5 w-5" />, title:'Setup & Integrationen', desc:'Kanäle einrichten, Systeme anbinden, Datenflüsse planen.'},
-            {step:'03', icon:<Workflow className="h-5 w-5" />, title:'Workflows & KI', desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.'},
-            {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
-          ].map((p)=> (
-            <div key={p.step} className="relative p-6 rounded-2xl bg-white/5 border border-white/10">
-              <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">
-                {p.step}
+          <div className="mt-8 grid md:grid-cols-4 gap-6">
+            {[
+              {step:'01', icon:<CalendarClock className="h-5 w-5" />, title:'Kickoff & Ziele', desc:'Use-Cases priorisieren, Kennzahlen definieren, Zugänge klären.'},
+              {step:'02', icon:<PlugZap className="h-5 w-5" />, title:'Setup & Integrationen', desc:'Kanäle einrichten, Systeme anbinden, Datenflüsse planen.'},
+              {step:'03', icon:<Workflow className="h-5 w-5" />, title:'Workflows & KI', desc:'Automatisierungen bauen, Bot-Flows & Vorlagen erstellen.'},
+              {step:'04', icon:<ShieldCheck className="h-5 w-5" />, title:'Go-Live & Betreuung', desc:'Schulung, Monitoring aktivieren, Optimierung nach Launch.'},
+            ].map((p)=> (
+              <div key={p.step} className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 grid place-items-center text-sm font-semibold">{p.step}</div>
+                  <div className="flex items-center gap-2 font-semibold">{p.icon}<span>{p.title}</span></div>
+                </div>
+                <p className="mt-3 text-sm text-slate-300">{p.desc}</p>
               </div>
-              <div className="flex items-center gap-3 mt-6">
-                {p.icon}<span className="font-semibold">{p.title}</span>
-              </div>
-              <p className="mt-3 text-sm text-slate-300">{p.desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -243,95 +201,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Kontakt: Calendly + Formular */}
-      <section id="kontakt" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-8">Kontakt & Termin</h2>
-          <p className="text-slate-300 text-center max-w-2xl mx-auto mb-10">
-            Buchen Sie direkt einen Termin über unseren Kalender – oder senden Sie uns eine kurze Nachricht.
-          </p>
+      {/* Calendly Terminbuchung */}
+      <section id="termin" className="py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-8">Termin buchen</h2>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div
+              className="calendly-inline-widget"
+              data-url="https://calendly.com/infrasenseai/discovery-call"
+              style={{ minWidth: "320px", height: "700px" }}
+            />
+          </div>
+        </div>
+      </section>
 
-          <div className="grid lg:grid-cols-2 gap-10 items-start">
-            {/* Calendly Inline Widget (Discovery Call) */}
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div
-                className="calendly-inline-widget"
-                data-url="https://calendly.com/infrasenseai/discovery-call"
-                style={{ minWidth: "320px", height: "700px" }}
-              />
-            </div>
-
-           <form
-  className="p-6 rounded-2xl border border-white/10 bg-white/5 shadow-sm grid gap-4"
-  onSubmit={async (e) => {
-    e.preventDefault();
-    const f = e.currentTarget as HTMLFormElement;
-    const fd = new FormData(f);
-
-    // WICHTIG: Diese Keys müssen genauso heißen wie in /api/contact.ts
-    const payload = {
-      name: String(fd.get('name') || ''),
-      email: String(fd.get('email') || ''),
-      company: String(fd.get('company') || ''),
-      message: String(fd.get('message') || ''),
-      website: String(fd.get('website') || ''), // Honeypot (versteckt)
-    };
-
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    const json = await res.json().catch(() => ({}));
-    if (res.ok && json.ok) {
-      alert('Danke! Ihre Anfrage wurde gesendet.');
-      f.reset();
-    } else {
-      alert(`Fehler: ${json.error || 'Senden fehlgeschlagen'}`);
-    }
-  }}
->
-  {/* Honeypot gegen Bots (unsichtbar lassen) */}
-  <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
-
-  <div>
-    <label className="text-sm">Name</label>
-    <input name="name" required
-      className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2"
-      placeholder="Ihr Name" />
-  </div>
-
-  <div className="grid sm:grid-cols-2 gap-4">
-    <div>
-      <label className="text-sm">E-Mail</label>
-      <input type="email" name="email" required
-        className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2"
-        placeholder="name@firma.de" />
-    </div>
-    <div>
-      <label className="text-sm">Unternehmen</label>
-      <input name="company"
-        className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2"
-        placeholder="Firmenname" />
-    </div>
-  </div>
-
-  <div>
-    <label className="text-sm">Ihr Anliegen</label>
-    <textarea name="message" required rows={5}
-      className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2"
-      placeholder="Kurze Beschreibung Ihres Use-Cases" />
-  </div>
-
-  <button type="submit"
-    className="mt-2 inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white text-[#0b0f19] hover:opacity-90">
-    Anfrage senden
-  </button>
-  <div className="text-xs text-slate-400 mt-1">
-    Mit Absenden stimmen Sie unserer Kontaktaufnahme zu. Wir teilen keine Daten mit Dritten.
-  </div>
-</form>
+      {/* Calendly Script */}
+      <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="afterInteractive" />
 
       {/* Footer */}
       <footer className="py-10 border-t border-white/10">
@@ -345,29 +230,6 @@ export default function Home() {
           <div className="text-xs text-slate-400">Impressum · Datenschutz</div>
         </div>
       </footer>
-
-      {/* Calendly Script */}
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-      />
     </div>
   );
 }
-import { Resend } from 'resend';
-const resend = new Resend('re_15P2BDkE_2SJqrVMH2SMj25rkQyCXhoak');
-
-(async function() {
-  try {
-    const data = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['delivered@resend.dev'],
-      subject: 'Hello World',
-      html: '<strong>It works!</strong>'
-    });
-
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-})();
