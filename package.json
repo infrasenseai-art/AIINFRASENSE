@@ -27,7 +27,13 @@
     "node": "20.x"
   }
 }
-npm install resend
-# oder: yarn add resend
-# oder: pnpm add resend
+{
+  "dependencies": {
+    "next": "14.x",
+    "react": "18.x",
+    "react-dom": "18.x",
+    "resend": "^3.3.0"
+  }
+}
+
 
