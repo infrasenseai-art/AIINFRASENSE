@@ -4,7 +4,7 @@ import Script from "next/script";
 import {
   MessageSquare, Workflow, Brain, Zap, CheckCircle, Rocket, Users,
   Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
-  Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle, Quote
+  Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
 
 /* ------------------------------ Header ------------------------------ */
@@ -28,7 +28,6 @@ function Header() {
           <a href="#stimmen" className="hover:text-white">Stimmen</a>
           <a href="#faq" className="hover:text-white">FAQ</a>
           <a href="#about" className="hover:text-white">Über uns</a>
-          {/* Weißer CTA-Button */}
           <a
             href="#termin"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-[#0b0f19] shadow hover:opacity-90 transition"
@@ -51,7 +50,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative text-slate-100 overflow-hidden bg-[#0b0f19]">
-      {/* Hintergrund (dezent, nicht zu präsent) */}
+      {/* Hintergrund (dezent) */}
       <div
         className="pointer-events-none absolute inset-0 -z-10 opacity-[0.22]"
         style={{
@@ -149,62 +148,62 @@ export default function Home() {
           <h2 className="text-3xl font-bold">Pakete</h2>
           <p className="mt-3 text-slate-300">Klar strukturierte Leistungspakete – transparent & erweiterbar.</p>
 
-          <div className="mt-10 grid md:grid-cols-3 gap-6">
-            {[
-              {
-                badge:'Starter',
-                icon:featureIcons.starter,
-                items:['Onboarding','1 Basis-Workflow','Standard-Templates & Quick-Replies','E-Mail Support'],
-                cta:'Jetzt Termin buchen'
-              },
-              {
-                badge:'Growth',
-                icon:featureIcons.growth,
-                items:['Alles aus Starter','KI-Antworten & Automatisierte Flows','3 zusätzliche Workflows','Monatliche Optimierung'],
-                highlight:true,
-                cta:'Demo & Termin'
-              },
-              {
-                badge:'Enterprise',
-                icon:featureIcons.enterprise,
-                items:['Individuelle Integrationen (ERP/CRM)','Monitoring & Alarmierung','Priorisierte Umsetzung','Sicherheit & Compliance erweitert'],
-                cta:'Gespräch vereinbaren'
-              },
-            ].map((p)=> (
-              <div
-                key={p.badge}
-                className={`p-6 rounded-2xl border ${
-                  p.highlight
-                    ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]'
-                    : 'border-white/10 bg-white/5'
+        <div className="mt-10 grid md:grid-cols-3 gap-6">
+          {[
+            {
+              badge:'Starter',
+              icon:featureIcons.starter,
+              items:['Onboarding','1 Basis-Workflow','Standard-Templates & Quick-Replies','E-Mail Support'],
+              cta:'Jetzt Termin buchen'
+            },
+            {
+              badge:'Growth',
+              icon:featureIcons.growth,
+              items:['Alles aus Starter','KI-Antworten & Automatisierte Flows','3 zusätzliche Workflows','Monatliche Optimierung'],
+              highlight:true,
+              cta:'Demo & Termin'
+            },
+            {
+              badge:'Enterprise',
+              icon:featureIcons.enterprise,
+              items:['Individuelle Integrationen (ERP/CRM)','Monitoring & Alarmierung','Priorisierte Umsetzung','Sicherheit & Compliance erweitert'],
+              cta:'Gespräch vereinbaren'
+            },
+          ].map((p)=> (
+            <div
+              key={p.badge}
+              className={`p-6 rounded-2xl border ${
+                p.highlight
+                  ? 'border-white/40 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.06)]'
+                  : 'border-white/10 bg-white/5'
+              }`}
+            >
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <span
+                  className={`${p.badge==='Starter' ? 'text-emerald-300' : p.badge==='Enterprise' ? 'text-violet-300' : 'text-white'}`}
+                >
+                  {p.badge}
+                </span>
+                <span className="opacity-80">•</span>
+                <span className="text-slate-300 flex items-center gap-2">{p.icon} Paket</span>
+              </div>
+
+              <ul className="mt-4 text-sm text-slate-200 space-y-2 list-disc pl-5">
+                {p.items.map((i)=> (<li key={i}>{i}</li>))}
+              </ul>
+
+              <a
+                href="#termin"
+                className={`mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl ${
+                  p.highlight ? 'bg-white text-[#0b0f19]' : 'border border-white/20 text-slate-200 hover:bg-white/10'
                 }`}
               >
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <span
-                    className={`${p.badge==='Starter' ? 'text-emerald-300' : p.badge==='Enterprise' ? 'text-violet-300' : 'text-white'}`}
-                  >
-                    {p.badge}
-                  </span>
-                  <span className="opacity-80">•</span>
-                  <span className="text-slate-300 flex items-center gap-2">{p.icon} Paket</span>
-                </div>
-
-                <ul className="mt-4 text-sm text-slate-200 space-y-2 list-disc pl-5">
-                  {p.items.map((i)=> (<li key={i}>{i}</li>))}
-                </ul>
-
-                <a
-                  href="#termin"
-                  className={`mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl ${
-                    p.highlight ? 'bg-white text-[#0b0f19]' : 'border border-white/20 text-slate-200 hover:bg-white/10'
-                  }`}
-                >
-                  {p.cta}
-                  <ArrowRightCircle className="h-4 w-4" />
-                </a>
-              </div>
-            ))}
-          </div>
+                {p.cta}
+                <ArrowRightCircle className="h-4 w-4" />
+              </a>
+            </div>
+          ))}
+        </div>
         </div>
       </section>
 
@@ -255,44 +254,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stimmen / Rezensionen */}
+      {/* Stimmen / Rezensionen (branchen-geändert) */}
       <section id="stimmen" className="py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center">Was Kund:innen sagen</h2>
 
           <div className="mt-10 grid md:grid-cols-2 gap-6">
-            {/* Karte 1 */}
+            {/* Fitnessstudio-Kette */}
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
               <div className="flex items-center gap-2 text-amber-300">
                 {Array.from({length:5}).map((_,i)=><Star key={i} className="h-5 w-5 fill-current" />)}
               </div>
               <p className="mt-4 text-slate-200 leading-relaxed">
-                „Die KI hat unseren Buchungsprozess revolutioniert. Unsere Kunden lieben die einfache und intuitive
-                Terminvereinbarung per Sprache. Außerdem haben wir unsere Verwaltungskosten deutlich gesenkt.“
+                „Mit dem Assistenten beantworten wir Standardfragen automatisch – z. B. Öffnungszeiten,
+                Verträge und Kursbuchungen. Unsere Mitglieder bekommen in Sekunden Hilfe und
+                das Team hat wieder Zeit fürs Studio.“
               </p>
               <div className="mt-6 text-sm text-slate-400">
-                <div className="font-semibold text-slate-200">Julia L.</div>
-                Betreiberin eines Wellness-SPA
+                <div className="font-semibold text-slate-200">Leon R.</div>
+                Operations Manager, Fitnessstudio-Kette
               </div>
             </div>
 
-            {/* Karte 2 */}
+            {/* E-Commerce */}
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
               <div className="flex items-center gap-2 text-amber-300">
                 {Array.from({length:5}).map((_,i)=><Star key={i} className="h-5 w-5 fill-current" />)}
               </div>
               <p className="mt-4 text-slate-200 leading-relaxed">
-                „Wir konnten Wartezeiten im Kundenservice massiv reduzieren – bei gleichzeitiger Qualitätssteigerung.
-                Besonders gefällt uns die saubere Eskalation zum Team.“
+                „Im E-Commerce hat der Assistent Tickets zu Lieferstatus und Retouren um über 40 % reduziert.
+                Die Übergabe an Agents funktioniert reibungslos – gleichzeitig ist unser CSAT spürbar gestiegen.“
               </p>
               <div className="mt-6 text-sm text-slate-400">
-                <div className="font-semibold text-slate-200">Anna S.</div>
-                Leiterin Kundenservice, Rechtsanwaltskanzlei
+                <div className="font-semibold text-slate-200">Miriam K.</div>
+                Leiterin Kundenservice, Online-Händler
               </div>
             </div>
           </div>
 
-          {/* Callout */}
           <div className="mt-10 grid place-items-center">
             <a href="#termin" className="px-5 py-3 rounded-xl bg-white text-[#0b0f19] font-medium">
               Ich möchte einen Termin vereinbaren
@@ -339,7 +338,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Über uns – dein Text */}
+      {/* Über uns */}
       <section id="about" className="py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">Über uns</h2>
