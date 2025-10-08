@@ -6,7 +6,7 @@ import {
   Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
   Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
-import ChatWidget from "../components/ChatWidget";
+import ChatWidget from "../pages/ChatWidget";
 
 
 /* ------------------------------ Header ------------------------------ */
