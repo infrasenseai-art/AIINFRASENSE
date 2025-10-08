@@ -6,6 +6,8 @@ import {
   Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
   Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
+import ChatWidget from "../components/ChatWidget";
+
 
 /* ------------------------------ Header ------------------------------ */
 function Header() {
@@ -386,6 +388,7 @@ export default function Home() {
           <div className="text-xs text-slate-400">Impressum · Datenschutz</div>
         </div>
       </footer>
+     <ChatWidget />
     </div>
   );
 }
