@@ -7,7 +7,7 @@ import {
   Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
 import ChatWidget from "../pages/ChatWidget";
-npm i @vercel/analytics
+
 
 /* ------------------------------ Header ------------------------------ */
 function Header() {
