@@ -1,4 +1,17 @@
 // pages/index.tsx
+import { Analytics } from '@vercel/analytics/react';
+import type { AppProps } from 'next/app';
+import { Analytics } from '@vercel/analytics/react';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <Component {...pageProps} />
+      <Analytics />
+    </>
+  );
+}
+
 import Image from "next/image";
 import Script from "next/script";
 import {
