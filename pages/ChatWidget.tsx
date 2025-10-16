@@ -2,13 +2,52 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, X, MessageCircle } from "lucide-react";
 
-/* ---------- TypeScript: window.Calendly deklarieren ---------- */
+/* ---------- Calendly robust laden ---------- */
 declare global {
   interface Window {
     Calendly?: { initPopupWidget(args: { url: string }): void };
-    __calendlyLoaded?: boolean;
   }
 }
+
+let calendlyReady: Promise<void> | null = null;
+
+function ensureCalendly(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.Calendly) return Promise.resolve();
+
+  if (!calendlyReady) {
+    calendlyReady = new Promise<void>((resolve, reject) => {
+      // Falls schon ein <script> existiert, nicht doppelt einfügen
+      const existing = document.querySelector<HTMLScriptElement>(
+        'script[src*="assets.calendly.com/assets/external/widget.js"]'
+      );
+      if (existing && window.Calendly) {
+        resolve();
+        return;
+      }
+
+      const s = existing ?? document.createElement("script");
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error("Calendly script failed to load"));
+      if (!existing) document.head.appendChild(s);
+    });
+  }
+  return calendlyReady;
+}
+
+async function openCalendly(url: string) {
+  try {
+    await ensureCalendly();
+    // User-gesture ist vorhanden (onClick), Popup sollte nicht geblockt werden
+    window.Calendly?.initPopupWidget({ url });
+  } catch {
+    // Fallback: normaler Tab
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+}
+
 
 /* ---------- Typen für strukturierte Replies ---------- */
 type Action =
