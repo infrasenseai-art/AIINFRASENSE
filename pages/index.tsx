@@ -1,15 +1,5 @@
 // pages/index.tsx
 
-import type { AppProps } from 'next/app';
-
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Component {...pageProps} />
-      <Analytics />
-    </>
-  );
-}
 
 import Image from "next/image";
 import Script from "next/script";
