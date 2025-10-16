@@ -2,33 +2,32 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, X, MessageCircle } from "lucide-react";
 
-/* ---------- TypeScript: window.Calendly ---------- */
+/* --- TS: Calendly im Window --- */
 declare global {
   interface Window {
     Calendly?: { initPopupWidget(args: { url: string }): void };
   }
 }
 
-/* ---------- Types ---------- */
-type Action =
-  | { type: "open_calendly"; url: string; label?: string }
-  | { type: "open_url"; url: string; label?: string };
+/* --- Typen --- */
+type AssistantPayload =
+  | string
+  | {
+      // n8n kann so ein Objekt schicken:
+      // { text?: string, action?: { type: "open_calendly", url: string } }
+      text?: string;
+      action?: { type?: string; url?: string };
+    };
 
-type AssistantPayload = {
-  text?: string;
-  action?: Action;
-  fallback?: { label?: string; href: string };
-};
+type ChatItem = { role: "assistant" | "user"; content: AssistantPayload };
 
-type ChatItem = {
-  role: "assistant" | "user";
-  content: string | AssistantPayload;
-};
-
-/* ---------- Settings ---------- */
+/* --- Settings --- */
 const WEBHOOK =
   process.env.NEXT_PUBLIC_CHAT_WEBHOOK ||
   "https://vodasun.app.n8n.cloud/webhook/chat";
+
+const CALENDLY_URL =
+  "https://calendly.com/infrasenseai/discovery-call?utm_source=chat";
 
 const SUGGESTIONS = [
   "Welche Leistungen bietet ihr?",
@@ -36,7 +35,7 @@ const SUGGESTIONS = [
   "Ist das DSGVO-konform?",
 ];
 
-/* ---------- Calendly Loader ---------- */
+/* --- Calendly Loader --- */
 let calendlyReady: Promise<void> | null = null;
 
 function ensureCalendly(): Promise<void> {
@@ -52,12 +51,11 @@ function ensureCalendly(): Promise<void> {
         resolve();
         return;
       }
-
       const s = existing ?? document.createElement("script");
       s.src = "https://assets.calendly.com/assets/external/widget.js";
       s.async = true;
       s.onload = () => resolve();
-      s.onerror = () => reject(new Error("Calendly script failed to load"));
+      s.onerror = () => reject(new Error("Calendly load failed"));
       if (!existing) document.head.appendChild(s);
     });
   }
@@ -67,13 +65,15 @@ function ensureCalendly(): Promise<void> {
 async function openCalendly(url: string) {
   try {
     await ensureCalendly();
+    // Auf direkten Click-Handler reagieren -> kein Popup-Block
     window.Calendly?.initPopupWidget({ url });
   } catch {
+    // Falls Script nicht lädt -> neues Tab
     window.open(url, "_blank", "noopener,noreferrer");
   }
 }
 
-/* ---------- Chat Component ---------- */
+/* --- Widget --- */
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -133,18 +133,30 @@ export default function ChatWidget() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      const raw = data?.reply ?? data?.message ?? data;
-      let reply: string | AssistantPayload;
+      // Wir akzeptieren String oder Objekt und bringen alles in eine einheitliche Form:
+      const raw: AssistantPayload = data?.reply ?? data?.message ?? data;
 
-      if (raw && typeof raw === "object" && (raw.text || raw.action || raw.fallback)) {
-        reply = raw as AssistantPayload;
-      } else if (typeof raw === "string") {
-        reply = raw;
+      // Wenn Backend "action.open_calendly" NICHT schickt, erzwingen wir trotzdem die Button-Antwort
+      // sobald der User eine Buchungsabsicht hat (du prüfst das in n8n bereits).
+      let normalized: AssistantPayload;
+      if (typeof raw === "object") {
+        normalized = {
+          text: raw.text ?? "Ich öffne die Terminbuchung …",
+          action:
+            raw.action?.type === "open_calendly"
+              ? { type: "open_calendly", url: raw.action.url || CALENDLY_URL }
+              : { type: "open_calendly", url: CALENDLY_URL },
+        };
+      } else if (typeof raw === "string" && /termin|buch/i.test(raw)) {
+        normalized = {
+          text: "Ich öffne die Terminbuchung …",
+          action: { type: "open_calendly", url: CALENDLY_URL },
+        };
       } else {
-        reply = "Alles klar!";
+        normalized = raw ?? "Alles klar!";
       }
 
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: normalized }]);
     } catch {
       setErr("Uff – da ist etwas schiefgelaufen. Bitte später erneut versuchen.");
       setMessages((prev) => [
@@ -205,12 +217,10 @@ export default function ChatWidget() {
             {messages.map((m, i) => {
               const isUser = m.role === "user";
 
+              // nur Text
               if (typeof m.content === "string") {
                 return (
-                  <div
-                    key={i}
-                    className={`flex ${isUser ? "justify-end" : "justify-start"}`}
-                  >
+                  <div key={i} className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
                     <div
                       className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                         isUser
@@ -224,45 +234,36 @@ export default function ChatWidget() {
                 );
               }
 
-              const payload = m.content as AssistantPayload;
+              // Objekt vom Assistenten
+              const payload = m.content as Exclude<AssistantPayload, string>;
+              const showBookButton =
+                payload?.action?.type === "open_calendly" ||
+                // Sicherheitshalber: wenn irgendein Objekt mit "action" kommt, erzwingen wir den Button
+                !!payload?.action;
+
               return (
                 <div key={i} className="flex justify-start">
                   <div className="max-w-[80%] space-y-2">
-                    {payload.text && (
+                    {payload?.text && (
                       <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100">
                         {payload.text}
                       </div>
                     )}
 
-                    {payload.action?.type === "open_calendly" && (
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() =>
-                            void openCalendly(payload.action!.url)
-                          }
-                          className="rounded-xl bg-white text-[#0b0f19] px-3.5 py-2 text-sm font-semibold hover:opacity-90"
-                        >
-                          {payload.action.label ?? "Termin buchen"}
-                        </button>
-
-                        {payload.fallback?.href && (
-                          <a
-                            href={payload.fallback.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs text-slate-200 hover:bg-white/10"
-                          >
-                            {payload.fallback.label ?? "Falls Popup blockiert ist"}
-                          </a>
-                        )}
-                      </div>
+                    {showBookButton && (
+                      <button
+                        onClick={() => void openCalendly(payload?.action?.url || CALENDLY_URL)}
+                        className="rounded-xl bg-white text-[#0b0f19] px-3.5 py-2 text-sm font-semibold hover:opacity-90"
+                      >
+                        Termin buchen
+                      </button>
                     )}
                   </div>
                 </div>
               );
             })}
 
-            {/* Suggestions */}
+            {/* Vorschläge */}
             {visibleSuggestions.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-1">
                 {visibleSuggestions.map((s) => (
@@ -277,7 +278,7 @@ export default function ChatWidget() {
               </div>
             )}
 
-            {/* Typing indicator */}
+            {/* Tippt… */}
             {loading && (
               <div className="flex justify-start">
                 <div className="flex items-center gap-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
@@ -287,10 +288,7 @@ export default function ChatWidget() {
                 </div>
               </div>
             )}
-
-            {err && (
-              <div className="text-[12px] text-rose-300/90 pt-1">{err}</div>
-            )}
+            {err && <div className="text-[12px] text-rose-300/90 pt-1">{err}</div>}
           </div>
 
           {/* Input */}
@@ -327,7 +325,7 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Typing dots animation */}
+      {/* Mini CSS für „Tippt…“ */}
       <style jsx>{`
         .dot {
           width: 6px;
