@@ -24,3 +24,11 @@
     "node": "20.x"
   }
 }
+{
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/react": "^18.2.69",
+    "@types/node": "^20.14.12"
+  }
+}
+
