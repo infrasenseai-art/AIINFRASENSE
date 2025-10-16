@@ -2,17 +2,37 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, X, MessageCircle } from "lucide-react";
 
-type ChatItem = { role: "assistant" | "user"; content: string };
+type ButtonLike = { label: string; href: string };
+type ChatItem = { role: "assistant" | "user"; content: string; button?: ButtonLike };
 
+// n8n Webhook
 const WEBHOOK =
   process.env.NEXT_PUBLIC_CHAT_WEBHOOK ||
-  "https://vodasun.app.n8n.cloud/webhook/chat"; // ✅ fallback
+  "https://vodasun.app.n8n.cloud/webhook/chat";
 
 const SUGGESTIONS = [
   "Welche Leistungen bietet ihr?",
   "Wie läuft die Implementierung ab?",
   "Ist das DSGVO-konform?",
 ];
+
+// ---- Reply-Payload, die vom Backend kommen kann ----
+type ReplyAction =
+  | { type: "open_calendly"; url: string }
+  // zusätzliche Actions später leicht erweiterbar
+  ;
+
+type ReplyPayload = {
+  text?: string;
+  action?: ReplyAction;
+  fallback?: ButtonLike;
+};
+
+declare global {
+  interface Window {
+    Calendly?: { initPopupWidget: (opts: { url: string }) => void };
+  }
+}
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -31,54 +51,107 @@ export default function ChatWidget() {
     boxRef.current.scrollTop = boxRef.current.scrollHeight;
   }, [messages, open, loading]);
 
+  // Calendly-Script nur einmal laden
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.Calendly) return;
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[src*="assets.calendly.com/assets/external/widget.js"]'
+    );
+    if (existing) return;
+
+    const s = document.createElement("script");
+    s.src = "https://assets.calendly.com/assets/external/widget.js";
+    s.async = true;
+    document.head.appendChild(s);
+  }, []);
+
   const canSend = input.trim().length > 0 && !loading;
 
   // Avoid showing a suggestion chip if it already exists in thread
   const visibleSuggestions = useMemo(() => {
-    const asked = new Set(messages.filter(m => m.role === "user").map(m => m.content.trim()));
-    return SUGGESTIONS.filter(s => !asked.has(s));
+    const asked = new Set(
+      messages.filter((m) => m.role === "user").map((m) => m.content.trim())
+    );
+    return SUGGESTIONS.filter((s) => !asked.has(s));
   }, [messages]);
+
+  function ensureSessionId() {
+    if (typeof window === "undefined") return "server";
+    const key = "chat-session";
+    const existing = window.localStorage.getItem(key);
+    if (existing) return existing;
+    const id = `web-${crypto.randomUUID?.() ?? Math.random().toString(36).slice(2)}`;
+    window.localStorage.setItem(key, id);
+    return id;
+  }
+
+  // ---- Action handler (Calendly etc.) ----
+  function handleReplyAction(action?: ReplyAction) {
+    if (!action) return;
+
+    if (action.type === "open_calendly" && action.url) {
+      // Popup öffnen, wenn Script verfügbar
+      if (window.Calendly?.initPopupWidget) {
+        window.Calendly.initPopupWidget({ url: action.url });
+      } else {
+        // Fallback – neuer Tab, wenn Script noch nicht da ist
+        window.open(action.url, "_blank", "noopener,noreferrer");
+      }
+    }
+  }
 
   async function send(text: string) {
     if (!text.trim()) return;
     setErr(null);
     setLoading(true);
-    setMessages(prev => [...prev, { role: "user", content: text }]);
+    setMessages((prev) => [...prev, { role: "user", content: text }]);
 
     try {
       const res = await fetch(WEBHOOK, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // CORS hint (n8n: add matching headers in Respond to Webhook)
           "x-infrasense-client": "web",
         },
         body: JSON.stringify({
           message: text,
-          sessionId:
-            typeof window !== "undefined"
-              ? (window.localStorage.getItem("chat-session") ??
-                 (() => {
-                   const id = `web-${crypto.randomUUID?.() ?? Math.random().toString(36).slice(2)}`;
-                   window.localStorage.setItem("chat-session", id);
-                   return id;
-                 })())
-              : "server",
+          sessionId: ensureSessionId(),
         }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      const reply =
-        (data.reply as string) ||
-        (data.message?.content as string) ||
-        "Alles klar!";
+      // reply kann String ODER Objekt sein
+      let replyText = "";
+      let replyButton: ButtonLike | undefined = undefined;
 
-      setMessages(prev => [...prev, { role: "assistant", content: reply }]);
+      const payload: ReplyPayload | string =
+        data?.reply ?? data?.message?.content ?? "Alles klar!";
+
+      if (typeof payload === "string") {
+        replyText = payload;
+      } else if (payload && typeof payload === "object") {
+        replyText = payload.text || "";
+        replyButton = payload.fallback;
+
+        // Sofortige Action ausführen (z. B. Calendly-Popup)
+        handleReplyAction(payload.action);
+      }
+
+      // UI: Assistenten-Bubble + optionaler Button
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: replyText || "Alles klar!",
+          button: replyButton,
+        },
+      ]);
     } catch (e: any) {
       setErr("Uff – da ist etwas schiefgelaufen. Bitte später erneut versuchen.");
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
@@ -134,7 +207,10 @@ export default function ChatWidget() {
             className="max-h-[55vh] overflow-y-auto px-3 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10"
           >
             {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div
+                key={i}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+              >
                 <div
                   className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                     m.role === "user"
@@ -142,7 +218,21 @@ export default function ChatWidget() {
                       : "bg-white/5 text-slate-100 border border-white/10"
                   }`}
                 >
-                  {m.content}
+                  <div>{m.content}</div>
+
+                  {/* Optionaler Button (Fallback-Link) */}
+                  {m.button && (
+                    <div className="pt-2">
+                      <a
+                        href={m.button.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block rounded-lg bg-indigo-600/90 px-3 py-1.5 text-xs font-medium text-white hover:opacity-90"
+                      >
+                        {m.button.label}
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -180,7 +270,10 @@ export default function ChatWidget() {
           </div>
 
           {/* Input */}
-          <form onSubmit={handleSubmit} className="flex items-end gap-2 border-t border-white/10 bg-[#0b0f19]/80 px-3 py-3">
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-end gap-2 border-t border-white/10 bg-[#0b0f19]/80 px-3 py-3"
+          >
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -216,15 +309,27 @@ export default function ChatWidget() {
           width: 6px;
           height: 6px;
           border-radius: 9999px;
-          background: rgba(255,255,255,0.9);
+          background: rgba(255, 255, 255, 0.9);
           display: inline-block;
           animation: blink 1.2s infinite ease-in-out;
         }
-        .dot:nth-child(2) { animation-delay: .15s; }
-        .dot:nth-child(3) { animation-delay: .3s; }
+        .dot:nth-child(2) {
+          animation-delay: 0.15s;
+        }
+        .dot:nth-child(3) {
+          animation-delay: 0.3s;
+        }
         @keyframes blink {
-          0%, 80%, 100% { opacity: .2; transform: translateY(0); }
-          40% { opacity: 1; transform: translateY(-2px); }
+          0%,
+          80%,
+          100% {
+            opacity: 0.2;
+            transform: translateY(0);
+          }
+          40% {
+            opacity: 1;
+            transform: translateY(-2px);
+          }
         }
       `}</style>
     </>
