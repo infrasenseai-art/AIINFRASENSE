@@ -2,9 +2,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, X, MessageCircle } from "lucide-react";
 
-/* =========================
-   Typen für strukturierte Replies
-   ========================= */
+/* ---------- TypeScript: window.Calendly deklarieren ---------- */
+declare global {
+  interface Window {
+    Calendly?: { initPopupWidget(args: { url: string }): void };
+    __calendlyLoaded?: boolean;
+  }
+}
+
+/* ---------- Typen für strukturierte Replies ---------- */
 type Action =
   | { type: "open_calendly"; url: string; label?: string }
   | { type: "open_url"; url: string; label?: string };
@@ -20,9 +26,7 @@ type ChatItem = {
   content: string | AssistantPayload;
 };
 
-/* =========================
-   Konfiguration
-   ========================= */
+/* ---------- Konfig ---------- */
 const WEBHOOK =
   process.env.NEXT_PUBLIC_CHAT_WEBHOOK ||
   "https://vodasun.app.n8n.cloud/webhook/chat";
@@ -33,29 +37,28 @@ const SUGGESTIONS = [
   "Ist das DSGVO-konform?",
 ];
 
-/* =========================
-   Hilfsfunktionen (Calendly)
-   ========================= */
+/* ---------- Calendly Helper ---------- */
 function loadCalendly() {
   if (typeof window === "undefined") return;
-  if ((window as any).__calendlyLoaded) return;
+  if (window.__calendlyLoaded) return;
   const s = document.createElement("script");
   s.src = "https://assets.calendly.com/assets/external/widget.js";
   s.async = true;
-  s.onload = () => ((window as any).__calendlyLoaded = true);
+  s.onload = () => {
+    window.__calendlyLoaded = true;
+  };
   document.head.appendChild(s);
 }
 
 function openCalendly(url: string) {
   loadCalendly();
+  // kleines Delay, bis Script verfügbar ist
   setTimeout(() => {
-    (window as any).Calendly?.initPopupWidget({ url });
-  }, 50);
+    window.Calendly?.initPopupWidget({ url });
+  }, 60);
 }
 
-/* =========================
-   ChatWidget
-   ========================= */
+/* ---------- Component ---------- */
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -67,7 +70,7 @@ export default function ChatWidget() {
 
   const boxRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll
+  // Auto-Scroll
   useEffect(() => {
     if (!boxRef.current) return;
     boxRef.current.scrollTop = boxRef.current.scrollHeight;
@@ -75,10 +78,12 @@ export default function ChatWidget() {
 
   const canSend = input.trim().length > 0 && !loading;
 
-  // Suggestions nur anzeigen, wenn noch nicht gefragt
+  // Suggestions nur zeigen, wenn diese Frage noch nicht gestellt wurde
   const visibleSuggestions = useMemo(() => {
     const asked = new Set(
-      messages.filter((m) => m.role === "user").map((m) => String(m.content).trim())
+      messages
+        .filter((m) => m.role === "user")
+        .map((m) => String(m.content).trim())
     );
     return SUGGESTIONS.filter((s) => !asked.has(s));
   }, [messages]);
@@ -96,7 +101,10 @@ export default function ChatWidget() {
               const key = "chat-session";
               let id = window.localStorage.getItem(key);
               if (!id) {
-                id = `web-${crypto.randomUUID?.() ?? Math.random().toString(36).slice(2)}`;
+                id =
+                  "web-" +
+                  (crypto.randomUUID?.() ??
+                    Math.random().toString(36).slice(2));
                 window.localStorage.setItem(key, id);
               }
               return id;
@@ -115,7 +123,7 @@ export default function ChatWidget() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      // n8n-Standard: { reply: {...} } oder { message: "..."} oder plain string
+      // n8n kann { reply: {...} } oder plain string liefern
       const raw = data?.reply ?? data?.message ?? data;
       let reply: string | AssistantPayload;
 
@@ -128,8 +136,10 @@ export default function ChatWidget() {
       }
 
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-    } catch (e) {
-      setErr("Uff – da ist etwas schiefgelaufen. Bitte später erneut versuchen.");
+    } catch {
+      setErr(
+        "Uff – da ist etwas schiefgelaufen. Bitte später erneut versuchen."
+      );
       setMessages((prev) => [
         ...prev,
         {
@@ -151,9 +161,6 @@ export default function ChatWidget() {
     void send(text);
   }
 
-  /* =========================
-     Rendering
-     ========================= */
   return (
     <>
       {/* FAB */}
@@ -191,10 +198,12 @@ export default function ChatWidget() {
             {messages.map((m, i) => {
               const isUser = m.role === "user";
 
-              // TEXT-Blase
               if (typeof m.content === "string") {
                 return (
-                  <div key={i} className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+                  <div
+                    key={i}
+                    className={`flex ${isUser ? "justify-end" : "justify-start"}`}
+                  >
                     <div
                       className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                         isUser
@@ -208,7 +217,7 @@ export default function ChatWidget() {
                 );
               }
 
-              // STRUKTURIERTE Assistant-Antwort
+              // strukturierte Antwort (Button + Fallback)
               const payload = m.content as AssistantPayload;
               return (
                 <div key={i} className="flex justify-start">
@@ -262,7 +271,7 @@ export default function ChatWidget() {
                 {visibleSuggestions.map((s) => (
                   <button
                     key={s}
-                    onClick={() => send(s)}
+                    onClick={() => void send(s)}
                     className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-slate-200 hover:bg-white/10"
                   >
                     {s}
@@ -283,7 +292,9 @@ export default function ChatWidget() {
               </div>
             )}
 
-            {err && <div className="text-[12px] text-rose-300/90 pt-1">{err}</div>}
+            {err && (
+              <div className="text-[12px] text-rose-300/90 pt-1">{err}</div>
+            )}
           </div>
 
           {/* Input */}
@@ -302,4 +313,53 @@ export default function ChatWidget() {
                   handleSubmit();
                 }
               }}
-              className="min-h-[42px] max-h-28 flex-1 resize-none rounded-xl border border-white/10 bg-white/5 px-3 py-2 text
+              className="min-h-[42px] max-h-28 flex-1 resize-none rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-400/60"
+            />
+            <button
+              type="submit"
+              disabled={!canSend}
+              className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-semibold transition ${
+                canSend
+                  ? "bg-white text-[#0b0f19] hover:opacity-90"
+                  : "bg-white/30 text-[#0b0f19]/60 cursor-not-allowed"
+              }`}
+            >
+              <Send className="h-4 w-4" />
+              Senden
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Tiny CSS for typing dots */}
+      <style jsx>{`
+        .dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 9999px;
+          background: rgba(255, 255, 255, 0.9);
+          display: inline-block;
+          animation: blink 1.2s infinite ease-in-out;
+        }
+        .dot:nth-child(2) {
+          animation-delay: 0.15s;
+        }
+        .dot:nth-child(3) {
+          animation-delay: 0.3s;
+        }
+        @keyframes blink {
+          0%,
+          80%,
+          100% {
+            opacity: 0.2;
+            transform: translateY(0);
+          }
+          40% {
+            opacity: 1;
+            transform: translateY(-2px);
+          }
+        }
+      `}</style>
+    </>
+  );
+}
