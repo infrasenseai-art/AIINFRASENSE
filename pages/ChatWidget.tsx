@@ -2,13 +2,41 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, X, MessageCircle } from "lucide-react";
 
-/* ---------- Calendly robust laden ---------- */
+/* ---------- TypeScript: window.Calendly ---------- */
 declare global {
   interface Window {
     Calendly?: { initPopupWidget(args: { url: string }): void };
   }
 }
 
+/* ---------- Types ---------- */
+type Action =
+  | { type: "open_calendly"; url: string; label?: string }
+  | { type: "open_url"; url: string; label?: string };
+
+type AssistantPayload = {
+  text?: string;
+  action?: Action;
+  fallback?: { label?: string; href: string };
+};
+
+type ChatItem = {
+  role: "assistant" | "user";
+  content: string | AssistantPayload;
+};
+
+/* ---------- Settings ---------- */
+const WEBHOOK =
+  process.env.NEXT_PUBLIC_CHAT_WEBHOOK ||
+  "https://vodasun.app.n8n.cloud/webhook/chat";
+
+const SUGGESTIONS = [
+  "Welche Leistungen bietet ihr?",
+  "Wie läuft die Implementierung ab?",
+  "Ist das DSGVO-konform?",
+];
+
+/* ---------- Calendly Loader ---------- */
 let calendlyReady: Promise<void> | null = null;
 
 function ensureCalendly(): Promise<void> {
@@ -17,7 +45,6 @@ function ensureCalendly(): Promise<void> {
 
   if (!calendlyReady) {
     calendlyReady = new Promise<void>((resolve, reject) => {
-      // Falls schon ein <script> existiert, nicht doppelt einfügen
       const existing = document.querySelector<HTMLScriptElement>(
         'script[src*="assets.calendly.com/assets/external/widget.js"]'
       );
@@ -40,64 +67,13 @@ function ensureCalendly(): Promise<void> {
 async function openCalendly(url: string) {
   try {
     await ensureCalendly();
-    // User-gesture ist vorhanden (onClick), Popup sollte nicht geblockt werden
     window.Calendly?.initPopupWidget({ url });
   } catch {
-    // Fallback: normaler Tab
     window.open(url, "_blank", "noopener,noreferrer");
   }
 }
 
-
-/* ---------- Typen für strukturierte Replies ---------- */
-type Action =
-  | { type: "open_calendly"; url: string; label?: string }
-  | { type: "open_url"; url: string; label?: string };
-
-type AssistantPayload = {
-  text?: string;
-  action?: Action;
-  fallback?: { label?: string; href: string };
-};
-
-type ChatItem = {
-  role: "assistant" | "user";
-  content: string | AssistantPayload;
-};
-
-/* ---------- Konfig ---------- */
-const WEBHOOK =
-  process.env.NEXT_PUBLIC_CHAT_WEBHOOK ||
-  "https://vodasun.app.n8n.cloud/webhook/chat";
-
-const SUGGESTIONS = [
-  "Welche Leistungen bietet ihr?",
-  "Wie läuft die Implementierung ab?",
-  "Ist das DSGVO-konform?",
-];
-
-/* ---------- Calendly Helper ---------- */
-function loadCalendly() {
-  if (typeof window === "undefined") return;
-  if (window.__calendlyLoaded) return;
-  const s = document.createElement("script");
-  s.src = "https://assets.calendly.com/assets/external/widget.js";
-  s.async = true;
-  s.onload = () => {
-    window.__calendlyLoaded = true;
-  };
-  document.head.appendChild(s);
-}
-
-function openCalendly(url: string) {
-  loadCalendly();
-  // kleines Delay, bis Script verfügbar ist
-  setTimeout(() => {
-    window.Calendly?.initPopupWidget({ url });
-  }, 60);
-}
-
-/* ---------- Component ---------- */
+/* ---------- Chat Component ---------- */
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -109,7 +85,6 @@ export default function ChatWidget() {
 
   const boxRef = useRef<HTMLDivElement>(null);
 
-  // Auto-Scroll
   useEffect(() => {
     if (!boxRef.current) return;
     boxRef.current.scrollTop = boxRef.current.scrollHeight;
@@ -117,12 +92,9 @@ export default function ChatWidget() {
 
   const canSend = input.trim().length > 0 && !loading;
 
-  // Suggestions nur zeigen, wenn diese Frage noch nicht gestellt wurde
   const visibleSuggestions = useMemo(() => {
     const asked = new Set(
-      messages
-        .filter((m) => m.role === "user")
-        .map((m) => String(m.content).trim())
+      messages.filter((m) => m.role === "user").map((m) => String(m.content).trim())
     );
     return SUGGESTIONS.filter((s) => !asked.has(s));
   }, [messages]);
@@ -142,8 +114,7 @@ export default function ChatWidget() {
               if (!id) {
                 id =
                   "web-" +
-                  (crypto.randomUUID?.() ??
-                    Math.random().toString(36).slice(2));
+                  (crypto.randomUUID?.() ?? Math.random().toString(36).slice(2));
                 window.localStorage.setItem(key, id);
               }
               return id;
@@ -162,7 +133,6 @@ export default function ChatWidget() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      // n8n kann { reply: {...} } oder plain string liefern
       const raw = data?.reply ?? data?.message ?? data;
       let reply: string | AssistantPayload;
 
@@ -176,9 +146,7 @@ export default function ChatWidget() {
 
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch {
-      setErr(
-        "Uff – da ist etwas schiefgelaufen. Bitte später erneut versuchen."
-      );
+      setErr("Uff – da ist etwas schiefgelaufen. Bitte später erneut versuchen.");
       setMessages((prev) => [
         ...prev,
         {
@@ -256,7 +224,6 @@ export default function ChatWidget() {
                 );
               }
 
-              // strukturierte Antwort (Button + Fallback)
               const payload = m.content as AssistantPayload;
               return (
                 <div key={i} className="flex justify-start">
@@ -270,7 +237,9 @@ export default function ChatWidget() {
                     {payload.action?.type === "open_calendly" && (
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => openCalendly(payload.action!.url)}
+                          onClick={() =>
+                            void openCalendly(payload.action!.url)
+                          }
                           className="rounded-xl bg-white text-[#0b0f19] px-3.5 py-2 text-sm font-semibold hover:opacity-90"
                         >
                           {payload.action.label ?? "Termin buchen"}
@@ -287,17 +256,6 @@ export default function ChatWidget() {
                           </a>
                         )}
                       </div>
-                    )}
-
-                    {payload.action?.type === "open_url" && (
-                      <a
-                        href={payload.action.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block rounded-xl bg-white text-[#0b0f19] px-3.5 py-2 text-sm font-semibold hover:opacity-90"
-                      >
-                        {payload.action.label ?? "Öffnen"}
-                      </a>
                     )}
                   </div>
                 </div>
@@ -323,7 +281,6 @@ export default function ChatWidget() {
             {loading && (
               <div className="flex justify-start">
                 <div className="flex items-center gap-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                  <span className="sr-only">Tippt…</span>
                   <span className="dot" />
                   <span className="dot" />
                   <span className="dot" />
@@ -370,7 +327,7 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Tiny CSS for typing dots */}
+      {/* Typing dots animation */}
       <style jsx>{`
         .dot {
           width: 6px;
