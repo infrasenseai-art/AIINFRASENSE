@@ -26,3 +26,9 @@
     "node": "20.x"
   }
 }
+{
+  "dependencies": {
+    "resend": "^3.3.0"
+  }
+}
+
