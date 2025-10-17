@@ -1,54 +1,10 @@
-// ===== Calendly Helpers =====
-const CALENDLY_URL = "https://calendly.com/infrasenseai/discovery-call";
-
-function buildCalendlyUrl(params?: { name?: string; email?: string }) {
-  const u = new URL(CALENDLY_URL);
-  u.searchParams.set("utm_source", "chat");
-  if (params?.name) u.searchParams.set("name", params.name);
-  if (params?.email) u.searchParams.set("email", params.email);
-  return u.toString();
-}
-
-// lädt einmalig das Calendly Popup-Script
-function loadCalendlyScript(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (typeof window !== "undefined" && (window as any).Calendly) {
-      resolve();
-      return;
-    }
-    const existing = document.querySelector<HTMLScriptElement>(
-      'script[src*="assets.calendly.com/assets/external/widget.js"]'
-    );
-    if (existing) {
-      existing.onload = () => resolve();
-      existing.onerror = () => reject(new Error("Calendly script failed"));
-      return;
-    }
-    const s = document.createElement("script");
-    s.src = "https://assets.calendly.com/assets/external/widget.js";
-    s.async = true;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error("Calendly script failed"));
-    document.head.appendChild(s);
-  });
-}
-
-// öffnet Popup, fallback: neuer Tab
-async function openCalendly(params?: { name?: string; email?: string }) {
-  const url = buildCalendlyUrl(params);
-  try {
-    await loadCalendlyScript();
-    (window as any).Calendly?.initPopupWidget({ url });
-  } catch {
-    window.open(url, "_blank", "noopener,noreferrer");
-  }
-}
-
-
 // pages/ChatWidget.tsx
+"use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, X, MessageCircle } from "lucide-react";
 
+/* ===== Typen & Globals ===== */
 declare global {
   interface Window {
     Calendly?: { initPopupWidget(args: { url: string }): void };
@@ -61,6 +17,7 @@ type AssistantPayload =
 
 type ChatItem = { role: "assistant" | "user"; content: AssistantPayload };
 
+/* ===== Konstanten ===== */
 const WEBHOOK =
   process.env.NEXT_PUBLIC_CHAT_WEBHOOK ||
   "https://vodasun.app.n8n.cloud/webhook/chat";
@@ -74,18 +31,15 @@ const SUGGESTIONS = [
   "Ist das DSGVO-konform?",
 ];
 
-/* ========= Calendly Assets laden (JS + CSS) ========= */
+/* ===== Calendly Loader ===== */
 let calendlyPromise: Promise<void> | null = null;
 
 function ensureCalendlyAssets(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();
-
-  // Ist JS schon da?
   if (window.Calendly) return Promise.resolve();
 
   if (!calendlyPromise) {
     calendlyPromise = new Promise<void>((resolve, reject) => {
-      // CSS einfügen (für sichtbaren Overlay)
       const cssHref =
         "https://assets.calendly.com/assets/external/widget.css";
       if (!document.querySelector(`link[href="${cssHref}"]`)) {
@@ -95,7 +49,6 @@ function ensureCalendlyAssets(): Promise<void> {
         document.head.appendChild(link);
       }
 
-      // Script prüfen/einfügen
       const existing = document.querySelector<HTMLScriptElement>(
         'script[src*="assets.calendly.com/assets/external/widget.js"]'
       );
@@ -111,25 +64,24 @@ function ensureCalendlyAssets(): Promise<void> {
       if (!existing) document.head.appendChild(s);
     });
   }
+
   return calendlyPromise;
 }
 
-/** Versucht Popup zu öffnen, gibt true zurück wenn es _sicher_ versucht wurde. */
 async function tryOpenCalendlyPopup(url: string): Promise<boolean> {
   try {
     await ensureCalendlyAssets();
-
     if (window.Calendly?.initPopupWidget) {
       window.Calendly.initPopupWidget({ url });
       return true;
     }
   } catch {
-    // ignore; wir fallen zurück auf normalen Link
+    /* ignore */
   }
   return false;
 }
 
-/* ================= Widget ================= */
+/* ===== Chat Widget ===== */
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -138,12 +90,10 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<ChatItem[]>([
     { role: "assistant", content: "Hi 👋 Wie kann ich dir helfen?" },
   ]);
-
   const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!boxRef.current) return;
-    boxRef.current.scrollTop = boxRef.current.scrollHeight;
+    if (boxRef.current) boxRef.current.scrollTop = boxRef.current.scrollHeight;
   }, [messages, open, loading]);
 
   const canSend = input.trim().length > 0 && !loading;
@@ -188,10 +138,8 @@ export default function ChatWidget() {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-
       const raw: AssistantPayload = data?.reply ?? data?.message ?? data;
 
-      // Normalisieren: Wenn Buchungsabsicht → erzwinge Button-Antwort
       let normalized: AssistantPayload;
       if (typeof raw === "object") {
         normalized = {
@@ -236,7 +184,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* FAB */}
+      {/* Floating Button */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
@@ -247,31 +195,25 @@ export default function ChatWidget() {
         </button>
       )}
 
-      {/* Panel */}
+      {/* Chat Panel */}
       {open && (
         <div className="fixed bottom-6 right-6 z-[60] w-[min(92vw,380px)] overflow-hidden rounded-2xl border border-white/10 bg-[#0b0f19]/95 backdrop-blur shadow-2xl">
-          {/* Header */}
           <div className="relative flex items-center justify-between px-4 py-3 bg-gradient-to-r from-indigo-600 to-violet-600">
             <div className="font-semibold">InfrasenseAI Chat</div>
             <button
               className="rounded-lg p-1.5 hover:bg-white/10"
               onClick={() => setOpen(false)}
-              aria-label="Chat schließen"
             >
               <X className="h-5 w-5 text-white" />
             </button>
-            <span className="pointer-events-none absolute inset-0 ring-1 ring-white/10 rounded-2xl" />
           </div>
 
-          {/* Messages */}
           <div
             ref={boxRef}
             className="max-h-[55vh] overflow-y-auto px-3 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10"
           >
             {messages.map((m, i) => {
               const isUser = m.role === "user";
-
-              // Nur Text
               if (typeof m.content === "string") {
                 return (
                   <div key={i} className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -288,7 +230,6 @@ export default function ChatWidget() {
                 );
               }
 
-              // Objekt: ggf. mit Calendly-Action
               const payload = m.content as Exclude<AssistantPayload, string>;
               const showBookButton =
                 payload?.action?.type === "open_calendly" || !!payload?.action;
@@ -303,20 +244,15 @@ export default function ChatWidget() {
                     )}
 
                     {showBookButton && (
-                      // <a> mit href = HARTE FALLBACK – so passiert IMMER etwas
                       <a
                         href={payload?.action?.url || CALENDLY_URL}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={async (e) => {
-                          // Popup versuchen; nur verhindern, wenn wir _tatsächlich_ das Popup aufmachen
                           const ok = await tryOpenCalendlyPopup(
                             payload?.action?.url || CALENDLY_URL
                           );
-                          if (ok) {
-                            // Popup wurde gestartet → Standard-Link unterdrücken
-                            e.preventDefault();
-                          }
+                          if (ok) e.preventDefault();
                         }}
                         className="inline-block rounded-xl bg-white text-[#0b0f19] px-3.5 py-2 text-sm font-semibold hover:opacity-90"
                       >
@@ -328,7 +264,6 @@ export default function ChatWidget() {
               );
             })}
 
-            {/* Suggestions */}
             {visibleSuggestions.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-1">
                 {visibleSuggestions.map((s) => (
@@ -343,7 +278,6 @@ export default function ChatWidget() {
               </div>
             )}
 
-            {/* Typing */}
             {loading && (
               <div className="flex justify-start">
                 <div className="flex items-center gap-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
@@ -353,10 +287,10 @@ export default function ChatWidget() {
                 </div>
               </div>
             )}
+
             {err && <div className="text-[12px] text-rose-300/90 pt-1">{err}</div>}
           </div>
 
-          {/* Input */}
           <form
             onSubmit={handleSubmit}
             className="flex items-end gap-2 border-t border-white/10 bg-[#0b0f19]/80 px-3 py-3"
@@ -390,7 +324,7 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Mini CSS für „Tippt…“ */}
+      {/* Animierte Punkte */}
       <style jsx>{`
         .dot {
           width: 6px;
@@ -407,9 +341,7 @@ export default function ChatWidget() {
           animation-delay: 0.3s;
         }
         @keyframes blink {
-          0%,
-          80%,
-          100% {
+          0%, 80%, 100% {
             opacity: 0.2;
             transform: translateY(0);
           }
