@@ -2,13 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Animations */
-@keyframes blobA { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-20px) scale(1.06)} 66%{transform:translate(-20px,25px) scale(0.98)} 100%{transform:translate(0,0) scale(1)} }
-@keyframes blobB { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(-35px,15px) scale(1.04)} 66%{transform:translate(25px,-25px) scale(1.02)} 100%{transform:translate(0,0) scale(1)} }
-@keyframes blobC { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,30px) scale(1.05)} 66%{transform:translate(-30px,-15px) scale(0.97)} 100%{transform:translate(0,0) scale(1)} }
+/* Optional: kleine Defaults, passend zu deinem Dark Theme */
+html, body {
+  height: 100%;
+}
+body {
+  background-color: #0b0f19;
+  color: #e5e7eb; /* slate-200 */
+}
 
-.blobA { animation: blobA 26s ease-in-out infinite; }
-.blobB { animation: blobB 30s ease-in-out infinite; }
-.blobC { animation: blobC 34s ease-in-out infinite; }
-
-html, body { background:#0b0f19; }
+/* Dünne Scrollbar (optional) */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+.scrollbar-thumb-white\/10::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.1);
+}
