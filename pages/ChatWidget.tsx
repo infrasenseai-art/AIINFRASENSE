@@ -1,10 +1,8 @@
 // pages/ChatWidget.tsx
-"use client";
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, X, MessageCircle } from "lucide-react";
 
-/* ===== Typen & Globals ===== */
+/* ---------- Types & Globals ---------- */
 declare global {
   interface Window {
     Calendly?: { initPopupWidget(args: { url: string }): void };
@@ -17,7 +15,7 @@ type AssistantPayload =
 
 type ChatItem = { role: "assistant" | "user"; content: AssistantPayload };
 
-/* ===== Konstanten ===== */
+/* ---------- Config ---------- */
 const WEBHOOK =
   process.env.NEXT_PUBLIC_CHAT_WEBHOOK ||
   "https://vodasun.app.n8n.cloud/webhook/chat";
@@ -31,57 +29,46 @@ const SUGGESTIONS = [
   "Ist das DSGVO-konform?",
 ];
 
-/* ===== Calendly Loader ===== */
+/* ---------- Calendly Assets Loader (JS + CSS) ---------- */
 let calendlyPromise: Promise<void> | null = null;
 
 function ensureCalendlyAssets(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();
+
   if (window.Calendly) return Promise.resolve();
+  if (calendlyPromise) return calendlyPromise;
 
-  if (!calendlyPromise) {
-    calendlyPromise = new Promise<void>((resolve, reject) => {
-      const cssHref =
-        "https://assets.calendly.com/assets/external/widget.css";
-      if (!document.querySelector(`link[href="${cssHref}"]`)) {
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = cssHref;
-        document.head.appendChild(link);
-      }
+  calendlyPromise = new Promise<void>((resolve, reject) => {
+    // CSS (Overlay-Styles)
+    const cssHref = "https://assets.calendly.com/assets/external/widget.css";
+    if (!document.querySelector(`link[href="${cssHref}"]`)) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = cssHref;
+      document.head.appendChild(link);
+    }
 
-      const existing = document.querySelector<HTMLScriptElement>(
-        'script[src*="assets.calendly.com/assets/external/widget.js"]'
-      );
-      if (existing && window.Calendly) {
-        resolve();
-        return;
-      }
-      const s = existing ?? document.createElement("script");
-      s.src = "https://assets.calendly.com/assets/external/widget.js";
-      s.async = true;
-      s.onload = () => resolve();
-      s.onerror = () => reject(new Error("Calendly script load failed"));
-      if (!existing) document.head.appendChild(s);
-    });
-  }
+    // JS
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[src*="assets.calendly.com/assets/external/widget.js"]'
+    );
+    if (existing) {
+      existing.onload = () => resolve();
+      existing.onerror = () => reject(new Error("Calendly script load failed"));
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = "https://assets.calendly.com/assets/external/widget.js";
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error("Calendly script load failed"));
+    document.head.appendChild(s);
+  });
 
   return calendlyPromise;
 }
 
-async function tryOpenCalendlyPopup(url: string): Promise<boolean> {
-  try {
-    await ensureCalendlyAssets();
-    if (window.Calendly?.initPopupWidget) {
-      window.Calendly.initPopupWidget({ url });
-      return true;
-    }
-  } catch {
-    /* ignore */
-  }
-  return false;
-}
-
-/* ===== Chat Widget ===== */
+/* ======================== Chat Widget ======================== */
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -90,11 +77,21 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<ChatItem[]>([
     { role: "assistant", content: "Hi 👋 Wie kann ich dir helfen?" },
   ]);
+
   const boxRef = useRef<HTMLDivElement>(null);
 
+  // Autoscroll
   useEffect(() => {
-    if (boxRef.current) boxRef.current.scrollTop = boxRef.current.scrollHeight;
+    if (!boxRef.current) return;
+    boxRef.current.scrollTop = boxRef.current.scrollHeight;
   }, [messages, open, loading]);
+
+  // **NEU**: Calendly bereits laden, sobald der Chat geöffnet wird
+  useEffect(() => {
+    if (open) {
+      ensureCalendlyAssets().catch(() => {});
+    }
+  }, [open]);
 
   const canSend = input.trim().length > 0 && !loading;
 
@@ -138,8 +135,10 @@ export default function ChatWidget() {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+
       const raw: AssistantPayload = data?.reply ?? data?.message ?? data;
 
+      // Normalisieren: Wenn Buchungsabsicht → Button-Antwort
       let normalized: AssistantPayload;
       if (typeof raw === "object") {
         normalized = {
@@ -184,7 +183,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Action Button */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
@@ -195,25 +194,31 @@ export default function ChatWidget() {
         </button>
       )}
 
-      {/* Chat Panel */}
+      {/* Panel */}
       {open && (
         <div className="fixed bottom-6 right-6 z-[60] w-[min(92vw,380px)] overflow-hidden rounded-2xl border border-white/10 bg-[#0b0f19]/95 backdrop-blur shadow-2xl">
+          {/* Header */}
           <div className="relative flex items-center justify-between px-4 py-3 bg-gradient-to-r from-indigo-600 to-violet-600">
             <div className="font-semibold">InfrasenseAI Chat</div>
             <button
               className="rounded-lg p-1.5 hover:bg-white/10"
               onClick={() => setOpen(false)}
+              aria-label="Chat schließen"
             >
               <X className="h-5 w-5 text-white" />
             </button>
+            <span className="pointer-events-none absolute inset-0 ring-1 ring-white/10 rounded-2xl" />
           </div>
 
+          {/* Messages */}
           <div
             ref={boxRef}
             className="max-h-[55vh] overflow-y-auto px-3 py-3 space-y-3 scrollbar-thin scrollbar-thumb-white/10"
           >
             {messages.map((m, i) => {
               const isUser = m.role === "user";
+
+              // Nur Text
               if (typeof m.content === "string") {
                 return (
                   <div key={i} className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -230,6 +235,7 @@ export default function ChatWidget() {
                 );
               }
 
+              // Objekt: ggf. mit Calendly-Action
               const payload = m.content as Exclude<AssistantPayload, string>;
               const showBookButton =
                 payload?.action?.type === "open_calendly" || !!payload?.action;
@@ -248,11 +254,22 @@ export default function ChatWidget() {
                         href={payload?.action?.url || CALENDLY_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={async (e) => {
-                          const ok = await tryOpenCalendlyPopup(
-                            payload?.action?.url || CALENDLY_URL
-                          );
-                          if (ok) e.preventDefault();
+                        onClick={(e) => {
+                          const url = payload?.action?.url || CALENDLY_URL;
+
+                          // **Synchrones** Popup, falls bereits geladen
+                          if (
+                            typeof window !== "undefined" &&
+                            window.Calendly?.initPopupWidget
+                          ) {
+                            e.preventDefault(); // Fallback-Link unterdrücken
+                            window.Calendly.initPopupWidget({ url });
+                            return;
+                          }
+
+                          // Kein preventDefault => Fallback-Link öffnet neuen Tab
+                          // Optional zusätzlich:
+                          // window.open(url, "_blank", "noopener,noreferrer");
                         }}
                         className="inline-block rounded-xl bg-white text-[#0b0f19] px-3.5 py-2 text-sm font-semibold hover:opacity-90"
                       >
@@ -264,6 +281,7 @@ export default function ChatWidget() {
               );
             })}
 
+            {/* Suggestions */}
             {visibleSuggestions.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-1">
                 {visibleSuggestions.map((s) => (
@@ -278,6 +296,7 @@ export default function ChatWidget() {
               </div>
             )}
 
+            {/* Typing */}
             {loading && (
               <div className="flex justify-start">
                 <div className="flex items-center gap-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
@@ -287,10 +306,10 @@ export default function ChatWidget() {
                 </div>
               </div>
             )}
-
             {err && <div className="text-[12px] text-rose-300/90 pt-1">{err}</div>}
           </div>
 
+          {/* Input */}
           <form
             onSubmit={handleSubmit}
             className="flex items-end gap-2 border-t border-white/10 bg-[#0b0f19]/80 px-3 py-3"
@@ -324,7 +343,7 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Animierte Punkte */}
+      {/* Tiny CSS for typing dots + Calendly z-index fix */}
       <style jsx>{`
         .dot {
           width: 6px;
@@ -341,7 +360,9 @@ export default function ChatWidget() {
           animation-delay: 0.3s;
         }
         @keyframes blink {
-          0%, 80%, 100% {
+          0%,
+          80%,
+          100% {
             opacity: 0.2;
             transform: translateY(0);
           }
@@ -349,6 +370,16 @@ export default function ChatWidget() {
             opacity: 1;
             transform: translateY(-2px);
           }
+        }
+      `}</style>
+
+      {/* Globale Priorität für Calendly-Overlay */}
+      <style jsx global>{`
+        .calendly-overlay,
+        .calendly-popup,
+        .calendly-modal,
+        #calendly-overlay {
+          z-index: 999999 !important;
         }
       `}</style>
     </>
