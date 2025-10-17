@@ -1,3 +1,50 @@
+// ===== Calendly Helpers =====
+const CALENDLY_URL = "https://calendly.com/infrasenseai/discovery-call";
+
+function buildCalendlyUrl(params?: { name?: string; email?: string }) {
+  const u = new URL(CALENDLY_URL);
+  u.searchParams.set("utm_source", "chat");
+  if (params?.name) u.searchParams.set("name", params.name);
+  if (params?.email) u.searchParams.set("email", params.email);
+  return u.toString();
+}
+
+// lädt einmalig das Calendly Popup-Script
+function loadCalendlyScript(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (typeof window !== "undefined" && (window as any).Calendly) {
+      resolve();
+      return;
+    }
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[src*="assets.calendly.com/assets/external/widget.js"]'
+    );
+    if (existing) {
+      existing.onload = () => resolve();
+      existing.onerror = () => reject(new Error("Calendly script failed"));
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = "https://assets.calendly.com/assets/external/widget.js";
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error("Calendly script failed"));
+    document.head.appendChild(s);
+  });
+}
+
+// öffnet Popup, fallback: neuer Tab
+async function openCalendly(params?: { name?: string; email?: string }) {
+  const url = buildCalendlyUrl(params);
+  try {
+    await loadCalendlyScript();
+    (window as any).Calendly?.initPopupWidget({ url });
+  } catch {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+}
+
+
 // pages/ChatWidget.tsx
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, X, MessageCircle } from "lucide-react";
