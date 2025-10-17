@@ -86,7 +86,12 @@ export default function ChatWidget() {
     boxRef.current.scrollTop = boxRef.current.scrollHeight;
   }, [messages, open, loading]);
 
-  // **NEU**: Calendly bereits laden, sobald der Chat geöffnet wird
+  // **NEU**: Calendly sofort beim Laden (nicht erst beim Öffnen)
+  useEffect(() => {
+    ensureCalendlyAssets().catch(() => {});
+  }, []);
+
+  // **Optional zusätzlich** beim Öffnen noch einmal (Safety)
   useEffect(() => {
     if (open) {
       ensureCalendlyAssets().catch(() => {});
@@ -183,7 +188,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* Floating Action Button */}
+      {/* Floating Button */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
@@ -255,21 +260,20 @@ export default function ChatWidget() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => {
+                          e.preventDefault();
                           const url = payload?.action?.url || CALENDLY_URL;
 
-                          // **Synchrones** Popup, falls bereits geladen
+                          // Popup falls geladen
                           if (
                             typeof window !== "undefined" &&
                             window.Calendly?.initPopupWidget
                           ) {
-                            e.preventDefault(); // Fallback-Link unterdrücken
                             window.Calendly.initPopupWidget({ url });
                             return;
                           }
 
-                          // Kein preventDefault => Fallback-Link öffnet neuen Tab
-                          // Optional zusätzlich:
-                          // window.open(url, "_blank", "noopener,noreferrer");
+                          // Immer fallback → neuer Tab
+                          window.open(url, "_blank", "noopener,noreferrer");
                         }}
                         className="inline-block rounded-xl bg-white text-[#0b0f19] px-3.5 py-2 text-sm font-semibold hover:opacity-90"
                       >
@@ -343,7 +347,7 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Tiny CSS for typing dots + Calendly z-index fix */}
+      {/* Mini CSS */}
       <style jsx>{`
         .dot {
           width: 6px;
@@ -373,7 +377,7 @@ export default function ChatWidget() {
         }
       `}</style>
 
-      {/* Globale Priorität für Calendly-Overlay */}
+      {/* z-index Fix für Calendly Overlay */}
       <style jsx global>{`
         .calendly-overlay,
         .calendly-popup,
