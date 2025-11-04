@@ -394,3 +394,16 @@ export default function Home() {
     </div>
   );
 }
+import ChatWidget from "@/components/ChatWidget";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="de">
+      <body>
+        {children}
+        <ChatWidget />
+      </body>
+    </html>
+  );
+}
+
