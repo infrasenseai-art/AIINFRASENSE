@@ -9,19 +9,17 @@ import {
   Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
 
-// pages/index.tsx
 export default function Home() {
   return (
     <main>
-      {/* dein Inhalt */}
+      {/* 👉 dein bisheriger Seiteninhalt bleibt hier */}
+      {/* Beispiel: */}
+      {/* <Hero /> */}
+      {/* <Features /> */}
+      {/* <Footer /> */}
     </main>
   );
 }
-
-
-
-
-
 
 /* ------------------------------ Header ------------------------------ */
 function Header() {
