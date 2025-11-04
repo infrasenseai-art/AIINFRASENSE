@@ -1,6 +1,6 @@
 // pages/_app.tsx
 import type { AppProps } from "next/app";
-import ChatWidget from "./ChatWidget"; // liegt bei dir in /pages
+import ChatWidget from "./ChatWidget";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -10,4 +10,3 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </>
   );
 }
-
