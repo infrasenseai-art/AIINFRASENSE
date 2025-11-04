@@ -1,5 +1,6 @@
 // pages/index.tsx
 
+
 import Image from "next/image";
 import Script from "next/script";
 import {
@@ -7,7 +8,8 @@ import {
   Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
   Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
-import ChatWidget from "./ChatWidget"; // ← hinzugefügt
+import ChatWidget from "../pages/ChatWidget";
+
 
 /* ------------------------------ Header ------------------------------ */
 function Header() {
@@ -256,7 +258,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stimmen / Rezensionen */}
+      {/* Stimmen / Rezensionen (branchen-geändert) */}
       <section id="stimmen" className="py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center">Was Kund:innen sagen</h2>
@@ -388,9 +390,7 @@ export default function Home() {
           <div className="text-xs text-slate-400">Impressum · Datenschutz</div>
         </div>
       </footer>
-
-      {/* Superchat Widget am Seitenende */}
-      <ChatWidget />
+     <ChatWidget />
     </div>
   );
 }
