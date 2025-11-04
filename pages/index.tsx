@@ -9,14 +9,15 @@ import {
   Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
 
-import ChatWidget from "./ChatWidget"; // wenn du NUR hier einbinden willst
+import type { AppProps } from "next/app";
+import ChatWidget from "./ChatWidget";
 
-export default function Home() {
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <main>
-      {/* dein Inhalt */}
+    <>
+      <Component {...pageProps} />
       <ChatWidget />
-    </main>
+    </>
   );
 }
 
