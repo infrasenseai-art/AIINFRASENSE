@@ -8,6 +8,7 @@ import {
   Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
   Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
+
 import ChatWidget from "./ChatWidget"; // wenn du NUR hier einbinden willst
 
 export default function Home() {
@@ -19,7 +20,6 @@ export default function Home() {
   );
 }
 
-}
 
 
 
