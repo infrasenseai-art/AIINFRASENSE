@@ -8,19 +8,17 @@ import {
   Settings, ShieldCheck, Building2, CalendarClock, Cpu, Layers,
   Sparkles, PlugZap, BarChart4, Star, ArrowRightCircle
 } from "lucide-react";
-import ChatWidget from import ChatWidget from "./ChatWidget";
-;
+import ChatWidget from "./ChatWidget"; // ✅ nur EIN Import
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function Home() {
   return (
-    <html lang="de">
-      <body>
-        {children}
-        <ChatWidget />
-      </body>
-    </html>
+    <main>
+      {/* dein Inhalt */}
+      <ChatWidget />
+    </main>
   );
 }
+
 
 
 
