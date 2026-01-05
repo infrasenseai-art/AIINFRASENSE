@@ -13,7 +13,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infrasenseai.de/" />
 
-  <!-- Tailwind via CDN (schnell & einfach) -->
+  <!-- Tailwind via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -37,13 +37,11 @@
   </script>
 
   <style>
-    /* Subtle background grid */
     .grid-bg {
       background-image:
         radial-gradient(circle at 1px 1px, rgba(255,255,255,.10) 1px, transparent 0);
       background-size: 24px 24px;
     }
-    /* Smooth scroll */
     html { scroll-behavior: smooth; }
   </style>
 </head>
@@ -69,7 +67,6 @@
   <header class="sticky top-0 z-50 border-b border-white/10 bg-ink/80 backdrop-blur">
     <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
       <a href="#" class="flex items-center gap-2">
-        <!-- Replace with your logo -->
         <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-brand to-brand2"></div>
         <div class="leading-tight">
           <div class="text-sm font-semibold tracking-wide">InfrasenseAI</div>
@@ -94,7 +91,7 @@
         <button id="menuBtn"
                 class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 md:hidden"
                 aria-label="Menü öffnen">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <svg xmlns="https://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
@@ -165,7 +162,6 @@
           </div>
         </div>
 
-        <!-- Hero card -->
         <div class="relative">
           <div class="rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-6 shadow-soft">
             <div class="flex items-center justify-between">
@@ -224,7 +220,6 @@
         </div>
       </div>
 
-      <!-- Trust bar -->
       <div class="mt-14 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-xs text-white/70">
         <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div class="font-medium text-white/80">Typische Integrationen & Plattformen</div>
@@ -335,310 +330,4 @@
   <!-- Vorgehen -->
   <section id="vorgehen" class="border-t border-white/10">
     <div class="mx-auto max-w-6xl px-4 py-16">
-      <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h2 class="text-3xl font-semibold">Vorgehen</h2>
-          <p class="mt-2 max-w-2xl text-white/70">
-            Klarer, consulting-typischer Ablauf: Diagnose → Delivery → Enablement. So entsteht Wirkung – ohne Chaos.
-          </p>
-        </div>
-        <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70">
-          Typischer Start: <span class="font-semibold text-white">2–6 Wochen</span>
-        </div>
-      </div>
-
-      <div class="mt-10 grid gap-4 md:grid-cols-4">
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <div class="text-xs text-white/60">01 • Diagnose</div>
-          <div class="mt-2 text-lg font-semibold">Kickoff & KPI-Ziele</div>
-          <p class="mt-2 text-sm text-white/70">Use-Cases, Scope, Daten, Stakeholder, Success-Metriken.</p>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <div class="text-xs text-white/60">02 • Design</div>
-          <div class="mt-2 text-lg font-semibold">Architektur & Security</div>
-          <p class="mt-2 text-sm text-white/70">Integrationen, Rollen, Logging, Guardrails, DSGVO-Konzept.</p>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <div class="text-xs text-white/60">03 • Delivery</div>
-          <div class="mt-2 text-lg font-semibold">Build & Pilot</div>
-          <p class="mt-2 text-sm text-white/70">Workflow-Umsetzung, Tests, Monitoring, Pilot in Teilbereich.</p>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <div class="text-xs text-white/60">04 • Scale</div>
-          <div class="mt-2 text-lg font-semibold">Go-Live & Enablement</div>
-          <p class="mt-2 text-sm text-white/70">Training, Playbooks, Review-Zyklen, kontinuierliche Optimierung.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Case Studies -->
-  <section id="cases" class="border-t border-white/10 bg-slate2/35">
-    <div class="mx-auto max-w-6xl px-4 py-16">
-      <h2 class="text-3xl font-semibold">Case Studies (Beispiele)</h2>
-      <p class="mt-2 max-w-2xl text-white/70">
-        Hier bitte echte Cases ergänzen, sobald ihr sie habt. Bis dahin funktionieren „Beispiel-Cases“ als Platzhalter.
-      </p>
-
-      <div class="mt-10 grid gap-4 md:grid-cols-3">
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <div class="text-xs text-white/60">Kundenservice</div>
-          <h3 class="mt-2 text-lg font-semibold">Omnichannel Routing + Agent Assist</h3>
-          <p class="mt-2 text-sm text-white/70">Anliegen-Routing, Auto-Replies, Antwortvorschläge, Übergabe an Agents.</p>
-          <div class="mt-4 space-y-2 text-sm">
-            <div class="flex justify-between text-white/70"><span>Antwortzeit</span><span class="font-semibold text-emerald-300">-40%</span></div>
-            <div class="flex justify-between text-white/70"><span>Tickets deflected</span><span class="font-semibold text-emerald-300">+25%</span></div>
-          </div>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <div class="text-xs text-white/60">Sales Ops</div>
-          <h3 class="mt-2 text-lg font-semibold">Lead-Qualifizierung + CRM Hygiene</h3>
-          <p class="mt-2 text-sm text-white/70">Vorqualifizierung, Follow-ups, Dubletten-Check, Pipeline-Sync.</p>
-          <div class="mt-4 space-y-2 text-sm">
-            <div class="flex justify-between text-white/70"><span>Conversion</span><span class="font-semibold text-emerald-300">+12%</span></div>
-            <div class="flex justify-between text-white/70"><span>Manuelle Arbeit</span><span class="font-semibold text-emerald-300">-30%</span></div>
-          </div>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <div class="text-xs text-white/60">Operations</div>
-          <h3 class="mt-2 text-lg font-semibold">Eskalationen + Monitoring/Alerts</h3>
-          <p class="mt-2 text-sm text-white/70">SLAs, Alarme, Status-Updates, Reports, Verantwortlichkeiten.</p>
-          <div class="mt-4 space-y-2 text-sm">
-            <div class="flex justify-between text-white/70"><span>SLA-Breach</span><span class="font-semibold text-emerald-300">-18%</span></div>
-            <div class="flex justify-between text-white/70"><span>Transparenz</span><span class="font-semibold text-emerald-300">↑</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stimmen -->
-  <section id="stimmen" class="border-t border-white/10">
-    <div class="mx-auto max-w-6xl px-4 py-16">
-      <h2 class="text-3xl font-semibold">Was Kund:innen sagen</h2>
-      <p class="mt-2 max-w-2xl text-white/70">Kurz, glaubwürdig, consulting-style. (Ersetzt die Namen/Branchen, sobald ihr echte Zitate habt.)</p>
-
-      <div class="mt-10 grid gap-4 md:grid-cols-2">
-        <figure class="rounded-3xl border border-white/10 bg-white/5 p-7">
-          <blockquote class="text-white/80">
-            „Wir haben Standardanfragen automatisiert und gleichzeitig saubere Übergaben an das Team behalten. Ergebnis: schnellere Antworten, weniger Stress.“
-          </blockquote>
-          <figcaption class="mt-4 text-sm text-white/60">
-            <span class="font-semibold text-white/80">Leitung Customer Operations</span> • Service-Unternehmen
-          </figcaption>
-        </figure>
-
-        <figure class="rounded-3xl border border-white/10 bg-white/5 p-7">
-          <blockquote class="text-white/80">
-            „Die Integrationen sind stabil, das Monitoring ist klar – und unser Team wurde wirklich befähigt, selbst weiterzuentwickeln.“
-          </blockquote>
-          <figcaption class="mt-4 text-sm text-white/60">
-            <span class="font-semibold text-white/80">Head of RevOps</span> • B2B-SaaS
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- Compliance / FAQ -->
-  <section id="faq" class="border-t border-white/10 bg-slate2/35">
-    <div class="mx-auto max-w-6xl px-4 py-16">
-      <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h2 class="text-3xl font-semibold">FAQ & Compliance</h2>
-          <p class="mt-2 max-w-2xl text-white/70">Datenschutz & Governance sind Teil des Konzepts, nicht ein nachträgliches Add-on.</p>
-        </div>
-      </div>
-
-      <div class="mt-10 grid gap-4 md:grid-cols-2">
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <button class="faqBtn flex w-full items-start justify-between gap-4 text-left">
-            <div>
-              <div class="text-lg font-semibold">Ist das DSGVO-konform?</div>
-              <div class="mt-1 text-sm text-white/60">Privacy by Design, Datenminimierung, Rollen & Logging.</div>
-            </div>
-            <span class="mt-1 text-white/70">⌄</span>
-          </button>
-          <div class="faqPanel mt-4 hidden text-sm text-white/70">
-            Ja – sofern Architektur, Datenflüsse und Auftragsverarbeitung sauber umgesetzt sind. Wir planen Workflows mit Verschlüsselung,
-            Zugriffskontrollen, Audit-Trails und Datenminimierung. Externe Dienste nur mit passenden Vereinbarungen (z. B. AVV) und
-            transparenten Verarbeitungspfaden.
-          </div>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <button class="faqBtn flex w-full items-start justify-between gap-4 text-left">
-            <div>
-              <div class="text-lg font-semibold">Wie schnell sieht man Ergebnisse?</div>
-              <div class="mt-1 text-sm text-white/60">Pilot-Go-Live in Wochen, Skalierung danach.</div>
-            </div>
-            <span class="mt-1 text-white/70">⌄</span>
-          </button>
-          <div class="faqPanel mt-4 hidden text-sm text-white/70">
-            Oft liefern wir in 2–6 Wochen einen ersten messbaren Use-Case (Pilot). Danach skalieren wir entlang der priorisierten Roadmap
-            und etablieren Review-Zyklen für kontinuierliche Verbesserung.
-          </div>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <button class="faqBtn flex w-full items-start justify-between gap-4 text-left">
-            <div>
-              <div class="text-lg font-semibold">Wo werden Daten verarbeitet?</div>
-              <div class="mt-1 text-sm text-white/60">EU-Fokus, klare Datenflüsse.</div>
-            </div>
-            <span class="mt-1 text-white/70">⌄</span>
-          </button>
-          <div class="faqPanel mt-4 hidden text-sm text-white/70">
-            Nach Möglichkeit in der EU. Wenn Drittsysteme nötig sind, setzen wir auf Datenminimierung, technische Schutzmaßnahmen und
-            vertragliche Absicherung. Wir dokumentieren die Verarbeitung transparent.
-          </div>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <button class="faqBtn flex w-full items-start justify-between gap-4 text-left">
-            <div>
-              <div class="text-lg font-semibold">EU AI Act – was bedeutet das für uns?</div>
-              <div class="mt-1 text-sm text-white/60">Risikoklassifizierung, Transparenz, Guardrails.</div>
-            </div>
-            <span class="mt-1 text-white/70">⌄</span>
-          </button>
-          <div class="faqPanel mt-4 hidden text-sm text-white/70">
-            Wir bewerten Use-Cases, Daten und Risiken, schaffen Transparenz und bauen Guardrails ein (z. B. Human-in-the-Loop,
-            Protokollierung, Qualitätsregeln). So bleibt eure Lösung anpassbar, auch wenn sich Anforderungen ändern.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Kontakt -->
-  <section id="kontakt" class="border-t border-white/10">
-    <div class="mx-auto max-w-6xl px-4 py-16">
-      <div class="grid gap-8 md:grid-cols-2">
-        <div>
-          <h2 class="text-3xl font-semibold">Erstgespräch anfragen</h2>
-          <p class="mt-2 max-w-xl text-white/70">
-            Schreib kurz euren Status (Branche, Systeme, Volumen, Ziel-KPIs). Wir antworten mit einem konkreten Vorschlag für die nächsten Schritte.
-          </p>
-
-          <div class="mt-8 space-y-3 text-sm text-white/75">
-            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div class="font-semibold text-white/85">Was wir im Erstgespräch klären</div>
-              <div class="mt-2 text-white/70">Use-Cases • Daten • Stakeholder • KPI-Ziele • Zeitplan • Budgetrahmen</div>
-            </div>
-            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div class="font-semibold text-white/85">Typische Deliverables</div>
-              <div class="mt-2 text-white/70">Roadmap • Architektur-Skizze • Pilot-Plan • Aufwand & Timeline</div>
-            </div>
-          </div>
-
-          <!-- Replace with your Calendly / booking link -->
-          <a class="mt-8 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-brand to-brand2 px-5 py-3 font-semibold text-ink shadow-soft"
-             href="https://infrasenseai.de/#kontakt">
-            Terminlink einfügen (z. B. Calendly)
-          </a>
-        </div>
-
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <form class="space-y-4" action="#" method="post" onsubmit="return false;">
-            <div>
-              <label class="text-sm text-white/70">Name</label>
-              <input class="mt-1 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-brand/60"
-                     placeholder="Max Mustermann" />
-            </div>
-            <div>
-              <label class="text-sm text-white/70">E-Mail</label>
-              <input type="email"
-                     class="mt-1 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-brand/60"
-                     placeholder="max@firma.de" />
-            </div>
-            <div>
-              <label class="text-sm text-white/70">Worum geht’s?</label>
-              <textarea rows="5"
-                        class="mt-1 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-brand/60"
-                        placeholder="Branche, Systeme (CRM/ERP/Ticketing), Volumen, Ziele, Timeline …"></textarea>
-            </div>
-
-            <button class="w-full rounded-xl bg-white px-4 py-3 font-semibold text-ink hover:bg-white/90">
-              Anfrage senden (Hook integrieren)
-            </button>
-
-            <p class="text-xs text-white/50">
-              Hinweis: Dieses Formular ist ein Platzhalter. Ich kann dir auch direkt die passende Integration bauen (Formspree, Netlify Forms, HubSpot Forms etc.).
-            </p>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="border-t border-white/10 bg-black/20">
-    <div class="mx-auto max-w-6xl px-4 py-10">
-      <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-        <div>
-          <div class="flex items-center gap-2">
-            <div class="h-8 w-8 rounded-xl bg-gradient-to-br from-brand to-brand2"></div>
-            <div class="font-semibold">InfrasenseAI</div>
-          </div>
-          <p class="mt-2 max-w-md text-sm text-white/60">
-            AI Consulting & Prozessautomatisierung für moderne Unternehmen – mit Fokus auf messbare Outcomes, Robustheit und Enablement.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-6 text-sm text-white/70 md:grid-cols-3">
-          <div class="space-y-2">
-            <div class="font-semibold text-white/80">Navigation</div>
-            <a class="block hover:text-white" href="#leistungen">Leistungen</a>
-            <a class="block hover:text-white" href="#vorgehen">Vorgehen</a>
-            <a class="block hover:text-white" href="#cases">Case Studies</a>
-          </div>
-          <div class="space-y-2">
-            <div class="font-semibold text-white/80">Kontakt</div>
-            <a class="block hover:text-white" href="#kontakt">Erstgespräch</a>
-            <a class="block hover:text-white" href="mailto:hello@infrasenseai.de">hello@infrasenseai.de</a>
-          </div>
-          <div class="space-y-2">
-            <div class="font-semibold text-white/80">Rechtliches</div>
-            <a class="block hover:text-white" href="/impressum">Impressum</a>
-            <a class="block hover:text-white" href="/datenschutz">Datenschutz</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
-        <div>© <span id="year"></span> InfrasenseAI. Alle Rechte vorbehalten.</div>
-        <div>Made for a consulting-grade presence.</div>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Mobile menu toggle
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileNav = document.getElementById('mobileNav');
-    menuBtn?.addEventListener('click', () => {
-      mobileNav.classList.toggle('hidden');
-    });
-
-    // FAQ accordion
-    const btns = document.querySelectorAll('.faqBtn');
-    btns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const panel = btn.parentElement.querySelector('.faqPanel');
-        const isOpen = !panel.classList.contains('hidden');
-        document.querySelectorAll('.faqPanel').forEach(p => p.classList.add('hidden'));
-        if (!isOpen) panel.classList.remove('hidden');
-      });
-    });
-
-    // Footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+      <div class="flex flex-
